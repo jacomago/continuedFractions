@@ -48,7 +48,7 @@ public class MainTest {
 
 	@Test
 	public void testSpeed() {
-		BigInteger v = BigInteger.valueOf(100000);
+		BigInteger v = BigInteger.valueOf(1000);
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
 		l.add(BigInteger.valueOf(-2));
 		l.add(BigInteger.valueOf(0));
