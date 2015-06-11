@@ -3,9 +3,8 @@ package org.cf;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
@@ -41,8 +40,7 @@ public class Computation {
 		return x.subtract(BigInteger.ONE);
 	}
 
-	static public Poly nextPoly(Poly prev, BigInteger x)
-			throws InterruptedException {
+	static public Poly nextPoly(Poly prev, BigInteger x) throws Exception {
 		// Get the poly P(x+a_n)
 		ArrayList<BigInteger> coeffs = partialPoly(prev, x);
 		// P_{n+1}(x) = -x^dQ_n(x^-1)
@@ -57,7 +55,7 @@ public class Computation {
 	}
 
 	public static ArrayList<BigInteger> partialPoly(Poly prev, BigInteger x)
-			throws InterruptedException {
+			throws Exception {
 		ArrayList<BigInteger> coeffs = new ArrayList<BigInteger>();
 		ArrayList<BigInteger> oldCoeffs = prev.getCoeffs();
 		int d = prev.getDegree();
@@ -69,45 +67,27 @@ public class Computation {
 	}
 
 	public static BigInteger nextTerm(final BigInteger x,
-			ArrayList<BigInteger> oldCoeffs, int d, int count)
-			throws InterruptedException {
-
-		// service that wraps a thread pool with 5 threads
-		CompletionService<BigInteger> compService = new ExecutorCompletionService<BigInteger>(
-				Executors.newFixedThreadPool(d + 1 - count));
-		BigInteger newC = BigInteger.ZERO;
-
-		// how many futures there are to check
-		int remainingFutures = 0;
-
+			ArrayList<BigInteger> oldCoeffs, int d, int count) throws Exception {
+		// Set up the individual approximation tasks
+		List<NextTerm> tasks = new ArrayList<NextTerm>();
+		int nTasks = d + 1 - count;
 		for (int i = count; i <= d; i++) {
 			BigInteger number = oldCoeffs.get(i);
-			compService.submit(new NextTerm(x, number, count, i));
-
-			remainingFutures++;
+			tasks.add(new NextTerm(x, number, count, i));
 		}
 
-		BigInteger newInt;
+		// Run them via a thread pool
+		ExecutorService executor = Executors.newFixedThreadPool(nTasks);
+		List<Future<BigInteger>> results = executor.invokeAll(tasks);
+		executor.shutdown();
 
-		while (remainingFutures > 0) {
+		// Average the results
 
-			// block until a callable completes
-			Future<BigInteger> completedFuture = compService.take();
-			remainingFutures--;
-			try {
-
-				// get the Widget, if the Callable was able to create it
-				newInt = completedFuture.get();
-
-			} catch (ExecutionException e) {
-				Throwable cause = e.getCause();
-				System.out.println("Widget creation failed" + cause);
-				continue;
-			}
-
-			// a Widget was created, so do something with it
-			newC = newC.add(newInt);
+		BigInteger newC = BigInteger.ZERO;
+		for (Future<BigInteger> result : results) {
+			newC = newC.add(result.get());
 		}
+
 		return newC;
 	}
 

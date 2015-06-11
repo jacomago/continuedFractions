@@ -1,7 +1,6 @@
 package org.cf;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ public class Main {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		String s = args[0];
 		String v = args[1];
 
@@ -36,7 +35,7 @@ public class Main {
 	}
 
 	public static ArrayList<BigInteger> continuedFraction(BigInteger values,
-			ArrayList<BigInteger> coeffs) {
+			ArrayList<BigInteger> coeffs) throws Exception {
 		Poly first = new Poly(coeffs);
 		Poly p = first;
 		ArrayList<BigInteger> cf = new ArrayList<BigInteger>();
@@ -44,30 +43,20 @@ public class Main {
 				.add(BigInteger.ONE)) {
 			BigInteger a = Computation.getNextContinuedFrac(p);
 			cf.add(a);
-			try {
-				p = Computation.nextPoly(p, a);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			p = Computation.nextPoly(p, a);
 		}
 		return cf;
 	}
 
 	public static void continuedFraction(BigInteger values,
-			ArrayList<BigInteger> coeffs, BufferedWriter w) throws IOException {
+			ArrayList<BigInteger> coeffs, BufferedWriter w) throws Exception {
 		Poly first = new Poly(coeffs);
 		Poly p = first;
 		for (BigInteger i = BigInteger.ZERO; i.compareTo(values) < 0; i = i
 				.add(BigInteger.ONE)) {
 			BigInteger a = Computation.getNextContinuedFrac(p);
 			w.write(a + ",");
-			try {
-				p = Computation.nextPoly(p, a);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			p = Computation.nextPoly(p, a);
 		}
 	}
 

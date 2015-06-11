@@ -57,7 +57,7 @@ public class ComputationTest {
 	}
 
 	@Test
-	public void testPartialPoly() {
+	public void testPartialPoly() throws Exception {
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
 		// test poly x^2 - 2
 		l.add(BigInteger.valueOf(-2));
@@ -67,12 +67,7 @@ public class ComputationTest {
 		Poly prev = new Poly(l);
 		BigInteger a = BigInteger.ONE;
 		ArrayList<BigInteger> p = null;
-		try {
-			p = Computation.partialPoly(prev, a);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		p = Computation.partialPoly(prev, a);
 
 		l.clear();
 		l.add(BigInteger.valueOf(-1));
@@ -89,12 +84,7 @@ public class ComputationTest {
 
 		prev = new Poly(l);
 		a = BigInteger.valueOf(2);
-		try {
-			p = Computation.partialPoly(prev, a);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		p = Computation.partialPoly(prev, a);
 
 		l.clear();
 		l.add(BigInteger.valueOf(-1));
@@ -106,7 +96,7 @@ public class ComputationTest {
 	}
 
 	@Test
-	public void testNextPoly() {
+	public void testNextPoly() throws Exception {
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
 		// test poly x^2 - 2
 		l.add(BigInteger.valueOf(-2));
@@ -116,12 +106,7 @@ public class ComputationTest {
 		Poly prev = new Poly(l);
 		BigInteger a = Computation.getNextContinuedFrac(prev);
 		Poly p = null;
-		try {
-			p = Computation.nextPoly(prev, a);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		p = Computation.nextPoly(prev, a);
 
 		l.clear();
 		l.add(BigInteger.valueOf(-1));

@@ -30,7 +30,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void testContinuedFraction() {
+	public void testContinuedFraction() throws Exception {
 		BigInteger v = BigInteger.valueOf(10);
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
 		l.add(BigInteger.valueOf(-2));
@@ -59,6 +59,9 @@ public class MainTest {
 			BufferedWriter w = new BufferedWriter(new FileWriter(f));
 			Main.continuedFraction(v, l, w);
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

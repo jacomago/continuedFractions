@@ -1,4 +1,5 @@
 #$ -cwd
 #$ -V
-#$ -l h_rt=0:10:00
-java org/cf/Main -2,0,1 10
+#$ -l h_rt=0:30:00
+#$ -pe smp 4
+java -Xmx500m org/cf/Main -2,0,0,1 1000000
