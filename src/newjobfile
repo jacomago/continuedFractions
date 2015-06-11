@@ -1,0 +1,4 @@
+#$ -cwd
+#$ -V
+#$ -l h_rt=0:10:00
+java org/cf/Main -2,0,1 10

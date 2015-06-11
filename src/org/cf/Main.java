@@ -44,7 +44,12 @@ public class Main {
 				.add(BigInteger.ONE)) {
 			BigInteger a = Computation.getNextContinuedFrac(p);
 			cf.add(a);
-			p = Computation.nextPoly(p, a);
+			try {
+				p = Computation.nextPoly(p, a);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return cf;
 	}
@@ -57,7 +62,12 @@ public class Main {
 				.add(BigInteger.ONE)) {
 			BigInteger a = Computation.getNextContinuedFrac(p);
 			w.write(a + ",");
-			p = Computation.nextPoly(p, a);
+			try {
+				p = Computation.nextPoly(p, a);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

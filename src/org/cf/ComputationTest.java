@@ -66,7 +66,13 @@ public class ComputationTest {
 
 		Poly prev = new Poly(l);
 		BigInteger a = BigInteger.ONE;
-		ArrayList<BigInteger> p = Computation.partialPoly(prev, a);
+		ArrayList<BigInteger> p = null;
+		try {
+			p = Computation.partialPoly(prev, a);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		l.clear();
 		l.add(BigInteger.valueOf(-1));
@@ -83,7 +89,12 @@ public class ComputationTest {
 
 		prev = new Poly(l);
 		a = BigInteger.valueOf(2);
-		p = Computation.partialPoly(prev, a);
+		try {
+			p = Computation.partialPoly(prev, a);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		l.clear();
 		l.add(BigInteger.valueOf(-1));
@@ -104,7 +115,13 @@ public class ComputationTest {
 
 		Poly prev = new Poly(l);
 		BigInteger a = Computation.getNextContinuedFrac(prev);
-		Poly p = Computation.nextPoly(prev, a);
+		Poly p = null;
+		try {
+			p = Computation.nextPoly(prev, a);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		l.clear();
 		l.add(BigInteger.valueOf(-1));
@@ -121,31 +138,37 @@ public class ComputationTest {
 		l.add(BigInteger.valueOf(-2));
 		l.add(BigInteger.valueOf(0));
 		l.add(BigInteger.valueOf(1));
-
-		assertEquals("Degree 2, count 0, poly x^2 -2, a = 1",
-				BigInteger.valueOf(-1),
-				Computation.nextTerm(BigInteger.ONE, l, 2, 0));
-		assertEquals("Degree 2, count 1, poly x^2 -2, a = 1",
-				BigInteger.valueOf(2),
-				Computation.nextTerm(BigInteger.ONE, l, 2, 1));
-		assertEquals("Degree 2, count 2, poly x^2 -2, a = 1",
-				BigInteger.valueOf(1),
-				Computation.nextTerm(BigInteger.ONE, l, 2, 2));
+		try {
+			assertEquals("Degree 2, count 0, poly x^2 -2, a = 1",
+					BigInteger.valueOf(-1),
+					Computation.nextTerm(BigInteger.ONE, l, 2, 0));
+			assertEquals("Degree 2, count 1, poly x^2 -2, a = 1",
+					BigInteger.valueOf(2),
+					Computation.nextTerm(BigInteger.ONE, l, 2, 1));
+			assertEquals("Degree 2, count 2, poly x^2 -2, a = 1",
+					BigInteger.valueOf(1),
+					Computation.nextTerm(BigInteger.ONE, l, 2, 2));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		l.clear();
 		l.add(BigInteger.valueOf(-1));
 		l.add(BigInteger.valueOf(-2));
 		l.add(BigInteger.valueOf(1));
-
-		assertEquals("Degree 2, count 0, poly x^2 -2x -1, a = 2",
-				BigInteger.valueOf(-1),
-				Computation.nextTerm(BigInteger.valueOf(2), l, 2, 0));
-		assertEquals("Degree 2, count 1, poly x^2 -2x -1, a = 2",
-				BigInteger.valueOf(2),
-				Computation.nextTerm(BigInteger.valueOf(2), l, 2, 1));
-		assertEquals("Degree 2, count 2, poly x^2 -2x -1, a = 2",
-				BigInteger.valueOf(1),
-				Computation.nextTerm(BigInteger.valueOf(2), l, 2, 2));
+		try {
+			assertEquals("Degree 2, count 0, poly x^2 -2x -1, a = 2",
+					BigInteger.valueOf(-1),
+					Computation.nextTerm(BigInteger.valueOf(2), l, 2, 0));
+			assertEquals("Degree 2, count 1, poly x^2 -2x -1, a = 2",
+					BigInteger.valueOf(2),
+					Computation.nextTerm(BigInteger.valueOf(2), l, 2, 1));
+			assertEquals("Degree 2, count 2, poly x^2 -2x -1, a = 2",
+					BigInteger.valueOf(1),
+					Computation.nextTerm(BigInteger.valueOf(2), l, 2, 2));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
