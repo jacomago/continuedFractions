@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -14,6 +12,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Computation {
+
+	static void log(String s, Object o) {
+		System.out.println(s + " is " + o);
+	}
 
 	static public int combinations(int n, int k) {
 		if (n >= k) {
@@ -47,28 +49,60 @@ public class Computation {
 
 	static public BigInteger getNextContinuedFracOpt(Poly p, int numProcesses) {
 		// Find the greatest int that prev(i) <0
-		
+
 		boolean[] comparisons = new boolean[numProcesses];
-		BigInteger top = BigInteger.valueOf(numProcesses+1);
-		BigInteger bottom = BigInteger.ZERO;
-		
+		BigInteger k = BigInteger.valueOf(numProcesses);
+		BigInteger top = k.add(BigInteger.ONE);
+		BigInteger bottom = BigInteger.ONE;
 		BigInteger newtop = top;
 		BigInteger newbottom = bottom;
-		while (top.compareTo(bottom.add(BigInteger.ONE))>0) {
-			for (int j = 1; j< numProcesses; j++) {
-				BigInteger key = bottom.add(BigInteger.valueOf(j).multiply(top.subtract(bottom)).divide(BigInteger.valueOf(numProcesses+1)));
-				comparisons[j-1] = BigInteger.ZERO.compareTo(p.result(key)) >0;
+		int i = 0;
+
+		boolean FoundIt = false;
+		while (!FoundIt) {
+			for (BigInteger j = BigInteger.ZERO; j.compareTo(k) < 0; j = j
+					.add(BigInteger.ONE)) {
+				BigInteger x = bottom.add(j.multiply(k.pow(i)));
+				log("x", x);
+				comparisons[j.intValue()] = p.result(x).compareTo(
+						BigInteger.ZERO) >= 0;
 			}
-			for (int j = 1; j< numProcesses; j++) {
-				if(comparisons[j]&&!comparisons[j-1]) {
-					newbottom = bottom.add(BigInteger.valueOf(j).multiply(top.subtract(bottom)).divide(BigInteger.valueOf(numProcesses+1)));
-					newtop = bottom.add(BigInteger.valueOf(j+1).multiply(top.subtract(bottom)).divide(BigInteger.valueOf(numProcesses+1)));
+
+			boolean tracker = false;
+
+			for (BigInteger j = BigInteger.ZERO; j.compareTo(k) < 0; j = j
+					.add(BigInteger.ONE)) {
+				BigInteger newTopOrBottom = bottom.add(j.multiply(k.pow(i)));
+				log("new top or bottom", newTopOrBottom);
+				if (comparisons[j.intValue()]) {
+					newtop = newTopOrBottom;
+					tracker = true;
 				} else {
-					bottom = newbottom;
-					top = newtop;
+					newbottom = newTopOrBottom;
 				}
+
+				log("newtop", newtop);
+				log("newbot", newbottom);
+				log("tracker", tracker);
+			}
+			top = newtop;
+			bottom = newbottom;
+			if (tracker) {
+				boolean test = !(top.compareTo(bottom.add(BigInteger.ONE)) > 0);
+
+				log("test", test);
+				if (test) {
+
+					FoundIt = true;
+				} else {
+					i--;
+				}
+			} else {
+				i++;
+				top = k.pow(i + 1).add(BigInteger.ONE);
 			}
 		}
+
 		return bottom;
 	}
 

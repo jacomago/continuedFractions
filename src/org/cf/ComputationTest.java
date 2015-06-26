@@ -33,10 +33,10 @@ public class ComputationTest {
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
 		BigInteger a;
 
-		l.add(BigInteger.valueOf(-1));
+		l.add(BigInteger.valueOf(-2));
 		l.add(BigInteger.valueOf(1));
 		a = Computation.getNextContinuedFrac(new Poly(l));
-		assertEquals("Poly p(x) = x-1 has root 1", BigInteger.ZERO, a);
+		assertEquals("Poly p(x) = x-2 has root 2", BigInteger.valueOf(1), a);
 
 		// test poly x^2 - 2
 		l.clear();
@@ -61,30 +61,33 @@ public class ComputationTest {
 		// test poly x - 1
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
 		BigInteger a;
-		for (int j =2;j< 32;j++) {
-		l.add(BigInteger.valueOf(-1));
-		l.add(BigInteger.valueOf(1));
-		a = Computation.getNextContinuedFracOpt(new Poly(l),j);
-		assertEquals("Poly p(x) = x-1 has root 1", BigInteger.ZERO, a);
+		for (int j = 2; j < 32; j++) {
+			Computation.log("j is ", j);
+			l.add(BigInteger.valueOf(-2));
+			l.add(BigInteger.valueOf(1));
+			a = Computation.getNextContinuedFracOpt(new Poly(l), j);
+			assertEquals("Poly p(x) = x-2 has root 2", BigInteger.ONE, a);
 
-		// test poly x^2 - 2
-		l.clear();
-		l.add(BigInteger.valueOf(-2));
-		l.add(BigInteger.valueOf(0));
-		l.add(BigInteger.valueOf(1));
-		a = Computation.getNextContinuedFracOpt(new Poly(l),j);
-		assertEquals("Poly p(x) = x^2 - 2 has root 1....", BigInteger.ONE, a);
+			// test poly x^2 - 2
+			l.clear();
+			l.add(BigInteger.valueOf(-2));
+			l.add(BigInteger.valueOf(0));
+			l.add(BigInteger.valueOf(1));
+			a = Computation.getNextContinuedFracOpt(new Poly(l), j);
+			assertEquals("Poly p(x) = x^2 - 2 has root 1....", BigInteger.ONE,
+					a);
 
-		// test poly x^2 - 5
-		l.clear();
-		l.add(BigInteger.valueOf(-5));
-		l.add(BigInteger.valueOf(0));
-		l.add(BigInteger.valueOf(1));
-		a = Computation.getNextContinuedFracOpt(new Poly(l),j);
-		assertEquals("Poly p(x) = x^2 - 5 has root 2....",
-				BigInteger.valueOf(2), a);
+			// test poly x^2 - 5
+			l.clear();
+			l.add(BigInteger.valueOf(-5));
+			l.add(BigInteger.valueOf(0));
+			l.add(BigInteger.valueOf(1));
+			a = Computation.getNextContinuedFracOpt(new Poly(l), j);
+			assertEquals("Poly p(x) = x^2 - 5 has root 2....",
+					BigInteger.valueOf(2), a);
 		}
 	}
+
 	@Test
 	public void testPartialPoly() throws Exception {
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
