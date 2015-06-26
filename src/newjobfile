@@ -1,5 +1,6 @@
 #$ -cwd
 #$ -V
+#$ -o output
 #$ -l h_rt=0:30:00
 #$ -pe smp 4
 java -Xmx500m org/cf/Main -2,0,0,1 1000000

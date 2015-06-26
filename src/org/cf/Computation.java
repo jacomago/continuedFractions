@@ -1,7 +1,12 @@
 package org.cf;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -38,6 +43,33 @@ public class Computation {
 		}
 
 		return x.subtract(BigInteger.ONE);
+	}
+
+	static public BigInteger getNextContinuedFracOpt(Poly p, int numProcesses) {
+		// Find the greatest int that prev(i) <0
+		
+		boolean[] comparisons = new boolean[numProcesses];
+		BigInteger top = BigInteger.valueOf(numProcesses+1);
+		BigInteger bottom = BigInteger.ZERO;
+		
+		BigInteger newtop = top;
+		BigInteger newbottom = bottom;
+		while (top.compareTo(bottom.add(BigInteger.ONE))>0) {
+			for (int j = 1; j< numProcesses; j++) {
+				BigInteger key = bottom.add(BigInteger.valueOf(j).multiply(top.subtract(bottom)).divide(BigInteger.valueOf(numProcesses+1)));
+				comparisons[j-1] = BigInteger.ZERO.compareTo(p.result(key)) >0;
+			}
+			for (int j = 1; j< numProcesses; j++) {
+				if(comparisons[j]&&!comparisons[j-1]) {
+					newbottom = bottom.add(BigInteger.valueOf(j).multiply(top.subtract(bottom)).divide(BigInteger.valueOf(numProcesses+1)));
+					newtop = bottom.add(BigInteger.valueOf(j+1).multiply(top.subtract(bottom)).divide(BigInteger.valueOf(numProcesses+1)));
+				} else {
+					bottom = newbottom;
+					top = newtop;
+				}
+			}
+		}
+		return bottom;
 	}
 
 	static public Poly nextPoly(Poly prev, BigInteger x) throws Exception {
@@ -98,5 +130,29 @@ public class Computation {
 				.valueOf(Computation.combinations(i, count));
 		BigInteger c = xToPow.multiply(number).multiply(comb);
 		return c;
+	}
+
+	public static void sumsEtc(ArrayList<BigInteger> numbers, BufferedWriter w)
+			throws IOException {
+		BigInteger sum = BigInteger.ZERO;
+		BigDecimal mean = BigDecimal.ZERO;
+		BigDecimal doubleMean = BigDecimal.ZERO;
+		int decimalPlaces = 10;
+		for (BigInteger n : numbers) {
+			sum = sum.add(n);
+			mean = mean.add(new BigDecimal(sum)).divide(BigDecimal.valueOf(2));
+			doubleMean = mean.divide(BigDecimal.valueOf(2));
+			w.write(n
+					+ ","
+					+ sum
+					+ ","
+					+ mean.setScale(decimalPlaces, BigDecimal.ROUND_DOWN)
+							.toString()
+					+ ","
+					+ doubleMean.setScale(decimalPlaces, BigDecimal.ROUND_DOWN)
+							.toString());
+			w.newLine();
+		}
+
 	}
 }

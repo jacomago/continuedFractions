@@ -2,8 +2,11 @@ package org.cf;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+
+import org.apache.commons.math3.fraction.BigFraction;
 
 public class Main {
 
@@ -21,7 +24,7 @@ public class Main {
 				new OutputStreamWriter(System.out));
 		w.write("The coeffs are " + coeffs);
 		w.newLine();
-		continuedFraction(values, coeffs, w);
+		continuedFractionAverages(values, coeffs, w);
 		w.close();
 	}
 
@@ -60,4 +63,28 @@ public class Main {
 		}
 	}
 
+	public static void continuedFractionAverages(BigInteger values,
+			ArrayList<BigInteger> coeffs, BufferedWriter w) throws Exception {
+		Poly first = new Poly(coeffs);
+		Poly p = first;
+
+		BigInteger sum = BigInteger.ZERO;
+		BigFraction mean = BigFraction.ZERO;
+		BigFraction doubleMean = BigFraction.ZERO;
+
+		int scale = 10;
+		for (BigInteger i = BigInteger.ONE; i.compareTo(values) <= 0; i = i
+				.add(BigInteger.ONE)) {
+			BigFraction counter = new BigFraction(i);
+			BigInteger a = Computation.getNextContinuedFrac(p);
+			sum = sum.add(a);
+			mean = (new BigFraction(sum)).divide(counter);
+			doubleMean = mean.divide(counter);
+			w.write(a + "," + sum + ","
+					+ mean.bigDecimalValue(scale, BigDecimal.ROUND_DOWN) + ","
+					+ doubleMean.bigDecimalValue(scale, BigDecimal.ROUND_DOWN));
+			w.newLine();
+			p = Computation.nextPoly(p, a);
+		}
+	}
 }
