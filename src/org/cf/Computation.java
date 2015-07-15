@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -47,9 +48,11 @@ public class Computation {
 		return x.subtract(BigInteger.ONE);
 	}
 
-	static public BigInteger getNextContinuedFracOpt(Poly p, int numProcesses) {
+	static public BigInteger getNextContinuedFracOpt(Poly p, int numProcesses)
+			throws InterruptedException, ExecutionException {
 		// Find the greatest int i that poly(i) <0
 		log("p", p);
+
 		boolean notFound = true;
 		BigInteger k = BigInteger.valueOf(numProcesses);
 		BigInteger top = BigInteger.ONE;
@@ -57,7 +60,7 @@ public class Computation {
 
 		int pow = 1;
 
-		if (checkPolylessThan0(p, bot)) {
+		if (checkPolylessThan0(p, bot).y) {
 			notFound = true;
 		} else {
 			return bot;
@@ -66,12 +69,23 @@ public class Computation {
 		while (notFound) {
 			boolean overallCheck = true;
 			BigInteger newtop = top;
+			List<Check> checks = new ArrayList<Check>();
 			for (int j = 1; j < numProcesses; j++) {
 				BigInteger bigJ = BigInteger.valueOf(j);
 				newtop = bot.add(bigJ.multiply(k.pow(pow)));
+				checks.add(new Check(p, newtop));
+			}
 
-				if (checkPolylessThan0(p, newtop)) {
-					top = newtop;
+			// Run them via a thread pool
+			ExecutorService executor = Executors
+					.newFixedThreadPool(numProcesses);
+			List<Future<checkXY>> results = executor.invokeAll(checks);
+			executor.shutdown();
+
+			for (Future<checkXY> result : results) {
+				checkXY r = result.get();
+				if (r.y) {
+					top = r.x;
 					log("top", top);
 				} else {
 					overallCheck = false;
@@ -92,13 +106,23 @@ public class Computation {
 		BigInteger newBot = origBot;
 		while (notFound) {
 			boolean overallCheck = true;
+			List<Check> checks = new ArrayList<Check>();
 			for (int j = 1; j < numProcesses; j++) {
 				BigInteger bigJ = BigInteger.valueOf(j);
 				bot = origBot.add(bigJ.multiply(k.pow(pow)));
 
-				if (checkPolylessThan0(p, bot)) {
-					newBot = bot;
-					log("bot", bot);
+				checks.add(new Check(p, bot));
+			}
+			// Run them via a thread pool
+			ExecutorService executor = Executors
+					.newFixedThreadPool(numProcesses);
+			List<Future<checkXY>> results = executor.invokeAll(checks);
+			executor.shutdown();
+			for (Future<checkXY> result : results) {
+				checkXY r = result.get();
+				if (r.y) {
+					newBot = r.x;
+					log("bot", newBot);
 				} else {
 					overallCheck = false;
 					break;
@@ -116,8 +140,8 @@ public class Computation {
 		return newBot;
 	}
 
-	static boolean checkPolylessThan0(Poly p, BigInteger a) {
-		return p.result(a).compareTo(BigInteger.ZERO) < 0;
+	static checkXY checkPolylessThan0(Poly p, BigInteger a) {
+		return new checkXY(a, p.result(a).compareTo(BigInteger.ZERO) < 0);
 	}
 
 	static public Poly nextPoly(Poly prev, BigInteger x) throws Exception {
