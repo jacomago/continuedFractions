@@ -52,7 +52,7 @@ public class Computation {
 		log("p", p);
 		boolean notFound = true;
 		BigInteger k = BigInteger.valueOf(numProcesses);
-		BigInteger top = k;
+		BigInteger top = BigInteger.ONE;
 		BigInteger bot = BigInteger.ONE;
 
 		int pow = 1;
@@ -70,7 +70,7 @@ public class Computation {
 				BigInteger bigJ = BigInteger.valueOf(j);
 				newtop = bot.add(bigJ.multiply(k.pow(pow)));
 
-				if (checkPolylessThan0(p, top)) {
+				if (checkPolylessThan0(p, newtop)) {
 					top = newtop;
 					log("top", top);
 				} else {
@@ -88,7 +88,7 @@ public class Computation {
 
 		notFound = true;
 		pow--;
-		BigInteger origBot = bot;// top.subtract(BigInteger.ONE);
+		BigInteger origBot = top.subtract(BigInteger.ONE);
 		BigInteger newBot = origBot;
 		while (notFound) {
 			boolean overallCheck = true;
