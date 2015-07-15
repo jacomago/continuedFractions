@@ -48,62 +48,76 @@ public class Computation {
 	}
 
 	static public BigInteger getNextContinuedFracOpt(Poly p, int numProcesses) {
-		// Find the greatest int that prev(i) <0
-
-		boolean[] comparisons = new boolean[numProcesses];
+		// Find the greatest int i that poly(i) <0
+		log("p", p);
+		boolean notFound = true;
 		BigInteger k = BigInteger.valueOf(numProcesses);
-		BigInteger top = k.add(BigInteger.ONE);
-		BigInteger bottom = BigInteger.ONE;
-		BigInteger newtop = top;
-		BigInteger newbottom = bottom;
-		int i = 0;
+		BigInteger top = k;
+		BigInteger bot = BigInteger.ONE;
 
-		boolean FoundIt = false;
-		while (!FoundIt) {
-			for (BigInteger j = BigInteger.ZERO; j.compareTo(k) < 0; j = j
-					.add(BigInteger.ONE)) {
-				BigInteger x = bottom.add(j.multiply(k.pow(i)));
-				log("x", x);
-				comparisons[j.intValue()] = p.result(x).compareTo(
-						BigInteger.ZERO) >= 0;
-			}
+		int pow = 1;
 
-			boolean tracker = false;
-
-			for (BigInteger j = BigInteger.ZERO; j.compareTo(k) < 0; j = j
-					.add(BigInteger.ONE)) {
-				BigInteger newTopOrBottom = bottom.add(j.multiply(k.pow(i)));
-				log("new top or bottom", newTopOrBottom);
-				if (comparisons[j.intValue()]) {
-					newtop = newTopOrBottom;
-					tracker = true;
-				} else {
-					newbottom = newTopOrBottom;
-				}
-
-				log("newtop", newtop);
-				log("newbot", newbottom);
-				log("tracker", tracker);
-			}
-			top = newtop;
-			bottom = newbottom;
-			if (tracker) {
-				boolean test = !(top.compareTo(bottom.add(BigInteger.ONE)) > 0);
-
-				log("test", test);
-				if (test) {
-
-					FoundIt = true;
-				} else {
-					i--;
-				}
-			} else {
-				i++;
-				top = k.pow(i + 1).add(BigInteger.ONE);
-			}
+		if (checkPolylessThan0(p, bot)) {
+			notFound = true;
+		} else {
+			return bot;
 		}
 
-		return bottom;
+		while (notFound) {
+			boolean overallCheck = true;
+			BigInteger newtop = top;
+			for (int j = 1; j < numProcesses; j++) {
+				BigInteger bigJ = BigInteger.valueOf(j);
+				newtop = bot.add(bigJ.multiply(k.pow(pow)));
+
+				if (checkPolylessThan0(p, top)) {
+					top = newtop;
+					log("top", top);
+				} else {
+					overallCheck = false;
+					break;
+				}
+			}
+			if (overallCheck) {
+				pow++;
+			} else {
+				notFound = false;
+			}
+
+		}
+
+		notFound = true;
+		pow--;
+		BigInteger origBot = bot;// top.subtract(BigInteger.ONE);
+		BigInteger newBot = origBot;
+		while (notFound) {
+			boolean overallCheck = true;
+			for (int j = 1; j < numProcesses; j++) {
+				BigInteger bigJ = BigInteger.valueOf(j);
+				bot = origBot.add(bigJ.multiply(k.pow(pow)));
+
+				if (checkPolylessThan0(p, bot)) {
+					newBot = bot;
+					log("bot", bot);
+				} else {
+					overallCheck = false;
+					break;
+				}
+			}
+			if (overallCheck) {
+				origBot = bot;
+			} else {
+				pow--;
+			}
+			if (pow < 0) {
+				notFound = false;
+			}
+		}
+		return newBot;
+	}
+
+	static boolean checkPolylessThan0(Poly p, BigInteger a) {
+		return p.result(a).compareTo(BigInteger.ZERO) < 0;
 	}
 
 	static public Poly nextPoly(Poly prev, BigInteger x) throws Exception {

@@ -34,4 +34,16 @@ public class Poly {
 		return y;
 	}
 
+	@Override
+	public String toString() {
+		String s = "";
+		int count = 0;
+		for (BigInteger c : coefficients) {
+
+			s = s + " + " + c + "x^" + count;
+			count++;
+		}
+		return s;
+	}
+
 }
