@@ -48,11 +48,38 @@ public class Computation {
 		return x.subtract(BigInteger.ONE);
 	}
 
+	static public BigInteger getNextContinuedFracPolyOpt(Poly p) {
+
+		List<BigInteger> coeffs = p.getCoeffs();
+		int d = coeffs.size();
+		BigInteger c = BigInteger.ZERO;
+		for (int j = d - 2; j >= 0; j++) {
+			c = coeffs.get(j);
+			if (c.compareTo(BigInteger.ZERO) != 0) {
+				break;
+			}
+
+		}
+
+		BigInteger s = c.divide(coeffs.get(d - 1)).negate();
+		log("s", s);
+		BigInteger start = s.add(BigInteger.valueOf(-(d))).max(BigInteger.ONE);
+		BigInteger end = s.add(BigInteger.valueOf(d));
+		for (BigInteger x = start; x.compareTo(end) < 0; x = x
+				.add(BigInteger.ONE)) {
+			int test = p.result(x).compareTo(BigInteger.ZERO);
+			log("test", test);
+			if (test >= 0) {
+				return x.subtract(BigInteger.ONE);
+			}
+		}
+		return end;
+
+	}
+
 	static public BigInteger getNextContinuedFracOpt(Poly p, int numProcesses)
 			throws InterruptedException, ExecutionException {
 		// Find the greatest int i that poly(i) <0
-		log("p", p);
-
 		boolean notFound = true;
 		BigInteger k = BigInteger.valueOf(numProcesses);
 		BigInteger top = BigInteger.ONE;
@@ -86,11 +113,13 @@ public class Computation {
 				checkXY r = result.get();
 				if (r.y) {
 					top = r.x;
-					log("top", top);
 				} else {
 					overallCheck = false;
 					break;
 				}
+			}
+			for (Future<checkXY> r : results) {
+				r.cancel(true);
 			}
 			if (overallCheck) {
 				pow++;
@@ -122,11 +151,13 @@ public class Computation {
 				checkXY r = result.get();
 				if (r.y) {
 					newBot = r.x;
-					log("bot", newBot);
 				} else {
 					overallCheck = false;
 					break;
 				}
+			}
+			for (Future<checkXY> r : results) {
+				r.cancel(true);
 			}
 			if (overallCheck) {
 				origBot = bot;
@@ -174,14 +205,15 @@ public class Computation {
 			ArrayList<BigInteger> oldCoeffs, int d, int count) throws Exception {
 		// Set up the individual approximation tasks
 		List<NextTerm> tasks = new ArrayList<NextTerm>();
+
 		int nTasks = d + 1 - count;
+
+		// Run them via a thread pool
+		ExecutorService executor = Executors.newFixedThreadPool(nTasks);
 		for (int i = count; i <= d; i++) {
 			BigInteger number = oldCoeffs.get(i);
 			tasks.add(new NextTerm(x, number, count, i));
 		}
-
-		// Run them via a thread pool
-		ExecutorService executor = Executors.newFixedThreadPool(nTasks);
 		List<Future<BigInteger>> results = executor.invokeAll(tasks);
 		executor.shutdown();
 

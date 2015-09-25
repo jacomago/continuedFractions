@@ -16,15 +16,17 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		String s = args[0];
 		String v = args[1];
+		String n = args[2];
 
 		BigInteger values = new BigInteger(v);
 		ArrayList<BigInteger> coeffs = createCoeffs(s);
+		int numProcesses = Integer.parseInt(n);
 
 		BufferedWriter w = new BufferedWriter(
 				new OutputStreamWriter(System.out));
 		w.write("The coeffs are " + coeffs);
 		w.newLine();
-		continuedFractionAverages(values, coeffs, w);
+		continuedFractionAverages(values, coeffs, w, numProcesses);
 		w.close();
 	}
 
@@ -64,7 +66,8 @@ public class Main {
 	}
 
 	public static void continuedFractionAverages(BigInteger values,
-			ArrayList<BigInteger> coeffs, BufferedWriter w) throws Exception {
+			ArrayList<BigInteger> coeffs, BufferedWriter w, int numProcesses)
+			throws Exception {
 		Poly first = new Poly(coeffs);
 		Poly p = first;
 
@@ -76,7 +79,7 @@ public class Main {
 		for (BigInteger i = BigInteger.ONE; i.compareTo(values) <= 0; i = i
 				.add(BigInteger.ONE)) {
 			BigFraction counter = new BigFraction(i);
-			BigInteger a = Computation.getNextContinuedFrac(p);
+			BigInteger a = Computation.getNextContinuedFracOpt(p, numProcesses);
 			sum = sum.add(a);
 			mean = (new BigFraction(sum)).divide(counter);
 			doubleMean = mean.divide(counter);
