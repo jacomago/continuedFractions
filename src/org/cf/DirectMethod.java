@@ -1,0 +1,95 @@
+package org.cf;
+
+import java.io.BufferedWriter;
+import java.math.BigInteger;
+import java.util.ArrayList;
+
+import org.apache.commons.math3.fraction.BigFraction;
+
+public class DirectMethod {
+
+	static ArrayList<BigInteger> partialQuotient(Poly p, BigInteger values,
+			BigFraction b, BufferedWriter w) throws Exception {
+		ArrayList<BigInteger> a = new ArrayList<BigInteger>();
+		a.add(Computation.getNextContinuedFracOpt(p, 2));
+		Poly p2 = Computation.nextPoly(p, a.get(0));
+		a.add(Computation.getNextContinuedFracOpt(p2, 2));
+
+		w.write(a.get(0) + "");
+		w.newLine();
+		w.write(a.get(1) + "");
+		w.newLine();
+
+		BigInteger xn = a.get(0);
+		BigInteger xn1 = a.get(1).multiply(a.get(0)).add(BigInteger.ONE);
+		BigInteger yn = BigInteger.ONE;
+		BigInteger yn1 = a.get(1);
+
+		Poly d = p.deriv();
+
+		BigInteger n = BigInteger.ZERO;
+		while (!(n.compareTo(values) > 0)) {
+			if (!checkPnQn(xn, xn1, yn, yn1)) {
+				break;
+			}
+			BigFraction tn = new BigFraction(xn1, yn1);
+			BigFraction alpha = calcAlpha(p, d, tn, yn, yn1);
+			BigFraction B = (new BigFraction(yn1.add(BigInteger.ONE),
+					BigInteger.ONE));
+			BigFraction compareB = (new BigFraction(yn1.pow(2), BigInteger.ONE))
+					.multiply(b);
+			if (compareB.compareTo(B) > 0) {
+				B = compareB;
+			}
+			while (!(n.compareTo(values) > 0) && checkynB(yn1, B)) {
+				n = n.add(BigInteger.ONE);
+				BigInteger an = floor(alpha);
+				w.write(an + "");
+				w.newLine();
+				a.add(an);
+				BigInteger newxn1 = an.multiply(xn1).add(xn);
+				BigInteger newyn1 = an.multiply(yn1).add(yn);
+				xn = xn1;
+				yn = yn1;
+				xn1 = newxn1;
+				yn1 = newyn1;
+				tn = new BigFraction(xn1, yn1);
+				alpha = BigFraction.ONE.divide(alpha.subtract(an));
+			}
+		}
+		return a;
+
+	}
+
+	static BigFraction calcAlpha(Poly p, Poly d, BigFraction tn, BigInteger yn,
+			BigInteger yn1) {
+		BigFraction r = d.result(tn).abs();
+		BigFraction r2 = p.result(tn).abs();
+		BigInteger squ = yn1.pow(2);
+		BigFraction sub = new BigFraction(yn, yn1);
+		return r.divide(r2.multiply(squ)).subtract(sub);
+	}
+
+	static BigInteger floor(BigFraction f) {
+		BigInteger[] divrem = f.getNumerator().divideAndRemainder(
+				f.getDenominator());
+		return divrem[0];
+	}
+
+	static boolean checkynB(BigInteger yn, BigFraction B) {
+		BigFraction y = new BigFraction(yn, BigInteger.ONE);
+		return B.compareTo(y) > 0;
+	}
+
+	static boolean checkPnQn(BigInteger pn, BigInteger pn1, BigInteger qn,
+			BigInteger qn1) {
+		BigInteger test = pn.multiply(qn1).subtract(pn1.multiply(qn));
+		if (test.compareTo(BigInteger.ONE) == 0
+				|| test.compareTo(BigInteger.ONE.negate()) == 0) {
+			return true;
+		} else
+			return false;
+
+	}
+
+}

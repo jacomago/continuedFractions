@@ -16,17 +16,16 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		String s = args[0];
 		String v = args[1];
-		String n = args[2];
 
 		BigInteger values = new BigInteger(v);
 		ArrayList<BigInteger> coeffs = createCoeffs(s);
-		int numProcesses = Integer.parseInt(n);
 
 		BufferedWriter w = new BufferedWriter(
 				new OutputStreamWriter(System.out));
 		w.write("The coeffs are " + coeffs);
 		w.newLine();
-		continuedFractionAverages(values, coeffs, w, numProcesses);
+		DirectMethod.partialQuotient(new Poly(coeffs), values, new BigFraction(
+				1, 100), w);
 		w.close();
 	}
 
