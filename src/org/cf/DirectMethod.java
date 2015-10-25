@@ -8,17 +8,21 @@ import org.apache.commons.math3.fraction.BigFraction;
 
 public class DirectMethod {
 
-	static ArrayList<BigInteger> partialQuotient(Poly p, BigInteger values,
-			BigFraction b, BufferedWriter w) throws Exception {
+	static ArrayList<BigInteger> partialQuotient(Poly p, BigInteger values, BigFraction b, BufferedWriter w)
+			throws Exception {
 		ArrayList<BigInteger> a = new ArrayList<BigInteger>();
 		a.add(Computation.getNextContinuedFracOpt(p, 2));
 		Poly p2 = Computation.nextPoly(p, a.get(0));
 		a.add(Computation.getNextContinuedFracOpt(p2, 2));
 
-		w.write(a.get(0) + "");
-		w.newLine();
-		w.write(a.get(1) + "");
-		w.newLine();
+		try {
+			w.write(a.get(0) + "");
+			w.newLine();
+			w.write(a.get(1) + "");
+			w.newLine();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		BigInteger xn = a.get(0);
 		BigInteger xn1 = a.get(1).multiply(a.get(0)).add(BigInteger.ONE);
@@ -34,18 +38,20 @@ public class DirectMethod {
 			}
 			BigFraction tn = new BigFraction(xn1, yn1);
 			BigFraction alpha = calcAlpha(p, d, tn, yn, yn1);
-			BigFraction B = (new BigFraction(yn1.add(BigInteger.ONE),
-					BigInteger.ONE));
-			BigFraction compareB = (new BigFraction(yn1.pow(2), BigInteger.ONE))
-					.multiply(b);
+			BigFraction B = (new BigFraction(yn1.add(BigInteger.ONE), BigInteger.ONE));
+			BigFraction compareB = (new BigFraction(yn1.pow(2), BigInteger.ONE)).multiply(b);
 			if (compareB.compareTo(B) > 0) {
 				B = compareB;
 			}
 			while (!(n.compareTo(values) > 0) && checkynB(yn1, B)) {
 				n = n.add(BigInteger.ONE);
 				BigInteger an = floor(alpha);
-				w.write(an + "");
-				w.newLine();
+				try {
+					w.write(an + "");
+					w.newLine();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				a.add(an);
 				BigInteger newxn1 = an.multiply(xn1).add(xn);
 				BigInteger newyn1 = an.multiply(yn1).add(yn);
@@ -61,8 +67,7 @@ public class DirectMethod {
 
 	}
 
-	static BigFraction calcAlpha(Poly p, Poly d, BigFraction tn, BigInteger yn,
-			BigInteger yn1) {
+	static BigFraction calcAlpha(Poly p, Poly d, BigFraction tn, BigInteger yn, BigInteger yn1) {
 		BigFraction r = d.result(tn).abs();
 		BigFraction r2 = p.result(tn).abs();
 		BigInteger squ = yn1.pow(2);
@@ -71,8 +76,7 @@ public class DirectMethod {
 	}
 
 	static BigInteger floor(BigFraction f) {
-		BigInteger[] divrem = f.getNumerator().divideAndRemainder(
-				f.getDenominator());
+		BigInteger[] divrem = f.getNumerator().divideAndRemainder(f.getDenominator());
 		return divrem[0];
 	}
 
@@ -81,11 +85,9 @@ public class DirectMethod {
 		return B.compareTo(y) > 0;
 	}
 
-	static boolean checkPnQn(BigInteger pn, BigInteger pn1, BigInteger qn,
-			BigInteger qn1) {
+	static boolean checkPnQn(BigInteger pn, BigInteger pn1, BigInteger qn, BigInteger qn1) {
 		BigInteger test = pn.multiply(qn1).subtract(pn1.multiply(qn));
-		if (test.compareTo(BigInteger.ONE) == 0
-				|| test.compareTo(BigInteger.ONE.negate()) == 0) {
+		if (test.compareTo(BigInteger.ONE) == 0 || test.compareTo(BigInteger.ONE.negate()) == 0) {
 			return true;
 		} else
 			return false;
