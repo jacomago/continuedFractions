@@ -3,8 +3,6 @@ package org.cf;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import org.apache.commons.math3.fraction.BigFraction;
-
 public class Poly {
 	ArrayList<BigInteger> coefficients;
 
@@ -57,21 +55,22 @@ public class Poly {
 		return new Poly(newCoeffs);
 	}
 
-	public BigFraction result(BigFraction x) {
+	public CFFraction result(CFFraction x) {
 		// TODO Auto-generated method stub
-		BigFraction y = BigFraction.ZERO;
+		BigInteger p = BigInteger.ZERO;
+		BigInteger q = x.denom.pow(this.getDegree());
 		int count = 0;
 		for (BigInteger coeff : coefficients) {
 			// System.out.println("coeff is " + coeff + " count is " + count);
-			BigFraction xToCount = x.pow(count);
+			BigInteger xToCount = x.num.pow(count).multiply(x.denom.pow(this.getDegree() - count));
 
 			// System.out.println("pow is " + xToCount);
-			y = y.add(xToCount.multiply(new BigFraction(coeff, BigInteger.ONE)));
+			p = p.add(xToCount.multiply(coeff));
 
 			// System.out.println("y is " + y);
 			count++;
 		}
-		return y;
+		return new CFFraction(p, q);
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class DirectMethodTest {
 				Arrays.asList(new BigInteger[] { BigInteger.valueOf(-2), BigInteger.ZERO, BigInteger.ONE }));
 		Poly p = new Poly(cs);
 		BigInteger N = BigInteger.TEN;
-		BigFraction b = new BigFraction(1, 100);
+		BigInteger b = BigInteger.valueOf(100);
 		BufferedWriter w = null;
 
 		ArrayList<BigInteger> result = new ArrayList<BigInteger>();

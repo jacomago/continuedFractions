@@ -8,7 +8,7 @@ import org.apache.commons.math3.fraction.BigFraction;
 
 public class DirectMethod {
 
-	static ArrayList<BigInteger> partialQuotient(Poly p, BigInteger values, BigFraction b, BufferedWriter w)
+	static ArrayList<BigInteger> partialQuotient(Poly p, BigInteger values, BigInteger b, BufferedWriter w)
 			throws Exception {
 		ArrayList<BigInteger> a = new ArrayList<BigInteger>();
 		a.add(Computation.getNextContinuedFracOpt(p, 2));
@@ -36,13 +36,14 @@ public class DirectMethod {
 			if (!checkPnQn(xn, xn1, yn, yn1)) {
 				break;
 			}
-			BigFraction tn = new BigFraction(xn1, yn1);
+			CFFraction tn = new CFFraction(xn1, yn1);
 			BigFraction alpha = calcAlpha(p, d, tn, yn, yn1);
-			BigFraction B = (new BigFraction(yn1.add(BigInteger.ONE), BigInteger.ONE));
-			BigFraction compareB = (new BigFraction(yn1.pow(2), BigInteger.ONE)).multiply(b);
+			CFFraction B = (new CFFraction(yn1.add(BigInteger.ONE), BigInteger.ONE));
+			CFFraction compareB = (new CFFraction(yn1.pow(2), BigInteger.ONE)).multiply(b);
 			if (compareB.compareTo(B) > 0) {
 				B = compareB;
 			}
+
 			while (!(n.compareTo(values) > 0) && checkynB(yn1, B)) {
 				n = n.add(BigInteger.ONE);
 				BigInteger an = floor(alpha);
@@ -59,7 +60,7 @@ public class DirectMethod {
 				yn = yn1;
 				xn1 = newxn1;
 				yn1 = newyn1;
-				tn = new BigFraction(xn1, yn1);
+				tn = new CFFraction(xn1, yn1);
 				alpha = BigFraction.ONE.divide(alpha.subtract(an));
 			}
 		}
@@ -67,12 +68,14 @@ public class DirectMethod {
 
 	}
 
-	static BigFraction calcAlpha(Poly p, Poly d, BigFraction tn, BigInteger yn, BigInteger yn1) {
-		BigFraction r = d.result(tn).abs();
-		BigFraction r2 = p.result(tn).abs();
+	static BigFraction calcAlpha(Poly p, Poly d, CFFraction tn, BigInteger yn, BigInteger yn1) {
+		CFFraction r = d.result(tn);
+		CFFraction r2 = p.result(tn);
 		BigInteger squ = yn1.pow(2);
-		BigFraction sub = new BigFraction(yn, yn1);
-		return r.divide(r2.multiply(squ)).subtract(sub);
+		BigInteger thing = r.denom.multiply(r2.num);
+		BigInteger top = r.num.abs().multiply(r2.denom.abs()).subtract(yn.multiply(yn1).multiply(thing));
+		BigInteger bot = squ.multiply(thing);
+		return new BigFraction(top, bot);
 	}
 
 	static BigInteger floor(BigFraction f) {
