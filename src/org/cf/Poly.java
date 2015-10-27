@@ -58,11 +58,12 @@ public class Poly {
 	public CFFraction result(CFFraction x) {
 		// TODO Auto-generated method stub
 		BigInteger p = BigInteger.ZERO;
-		BigInteger q = x.denom.pow(this.getDegree());
+		BigInteger q = x.getDenom().pow(this.getDegree());
 		int count = 0;
 		for (BigInteger coeff : coefficients) {
 			// System.out.println("coeff is " + coeff + " count is " + count);
-			BigInteger xToCount = x.num.pow(count).multiply(x.denom.pow(this.getDegree() - count));
+			BigInteger xToCount = x.getNum().pow(count)
+					.multiply(x.getDenom().pow(this.getDegree() - count));
 
 			// System.out.println("pow is " + xToCount);
 			p = p.add(xToCount.multiply(coeff));

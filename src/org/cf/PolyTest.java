@@ -42,20 +42,25 @@ public class PolyTest {
 		l.clear();
 		l.add(BigInteger.ONE);
 		p = new Poly(l);
-		assertEquals("p(x) = 1 gives 1 result", BigFraction.ONE,
 
-		p.result(BigFraction.ZERO));
+		CFFraction r = p
+				.result(new CFFraction(BigInteger.ZERO, BigInteger.ONE));
+		assertEquals("p(x) = 1 gives 1 result", BigFraction.ONE,
+				new BigFraction(r.getNum(), r.getDenom()));
+		r = p.result(new CFFraction(BigInteger.valueOf(34), BigInteger.ONE));
 		assertEquals("p(x) = 1 always gives 1 result", BigFraction.ONE,
-				p.result(new BigFraction(34, 1)));
+				new BigFraction(r.getNum(), r.getDenom()));
 
 		l.clear();
 		l.add(BigInteger.ZERO);
 		l.add(BigInteger.ONE);
 		p = new Poly(l);
+		r = p.result(new CFFraction(BigInteger.ZERO, BigInteger.ONE));
 		assertEquals("p(x) = x gives 0 from 0", BigFraction.ZERO,
-				p.result(BigFraction.ZERO));
+				new BigFraction(r.getNum(), r.getDenom()));
+		r = p.result(new CFFraction(BigInteger.valueOf(34), BigInteger.ONE));
 		assertEquals("p(x) = x gives 34 from 34", new BigFraction(34, 1),
-				p.result(new BigFraction(34, 1)));
+				new BigFraction(r.getNum(), r.getDenom()));
 	}
 
 	@Test

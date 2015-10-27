@@ -24,8 +24,11 @@ public class Main {
 				new OutputStreamWriter(System.out));
 		w.write("The coeffs are " + coeffs);
 		w.newLine();
-		DirectMethod.partialQuotient(new Poly(coeffs), values, new BigFraction(
-				1, 100), w);
+		ArrayList<BigInteger> a = DirectMethod.partialQuotient(
+				new Poly(coeffs), values, BigInteger.valueOf(100));
+		for (BigInteger i : a) {
+			w.write("" + i);
+		}
 		w.close();
 	}
 

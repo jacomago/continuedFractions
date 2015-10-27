@@ -175,7 +175,8 @@ public class Computation {
 		return new checkXY(a, p.result(a).compareTo(BigInteger.ZERO) < 0);
 	}
 
-	static public Poly nextPoly(Poly prev, BigInteger x) throws Exception {
+	static public Poly nextPoly(Poly prev, BigInteger x)
+			throws InterruptedException, ExecutionException {
 		// Get the poly P(x+a_n)
 		ArrayList<BigInteger> coeffs = partialPoly(prev, x);
 		// P_{n+1}(x) = -x^dQ_n(x^-1)
@@ -190,7 +191,7 @@ public class Computation {
 	}
 
 	public static ArrayList<BigInteger> partialPoly(Poly prev, BigInteger x)
-			throws Exception {
+			throws InterruptedException, ExecutionException {
 		ArrayList<BigInteger> coeffs = new ArrayList<BigInteger>();
 		ArrayList<BigInteger> oldCoeffs = prev.getCoeffs();
 		int d = prev.getDegree();
@@ -202,7 +203,8 @@ public class Computation {
 	}
 
 	public static BigInteger nextTerm(final BigInteger x,
-			ArrayList<BigInteger> oldCoeffs, int d, int count) throws Exception {
+			ArrayList<BigInteger> oldCoeffs, int d, int count)
+			throws InterruptedException, ExecutionException {
 		// Set up the individual approximation tasks
 		List<NextTerm> tasks = new ArrayList<NextTerm>();
 

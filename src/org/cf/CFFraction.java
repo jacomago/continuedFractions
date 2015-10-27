@@ -2,15 +2,27 @@ package org.cf;
 
 import java.math.BigInteger;
 
+import org.apache.commons.math3.exception.ZeroException;
 import org.apache.commons.math3.fraction.BigFraction;
 
 public class CFFraction extends Number {
-	BigInteger num;
-	BigInteger denom;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2006871860598636671L;
+	private BigInteger num;
+	private BigInteger denom;
 
 	CFFraction(BigInteger num, BigInteger denom) {
+		if (denom.compareTo(BigInteger.ZERO) == 0)
+			throw new ZeroException();
 		this.num = num;
-		this.denom = num;
+		this.denom = denom;
+	}
+
+	@Override
+	public String toString() {
+		return this.num + "/" + this.denom;
 	}
 
 	BigFraction bigFraction() {
@@ -37,4 +49,11 @@ public class CFFraction extends Number {
 		return bigFraction().longValue();
 	}
 
+	BigInteger getNum() {
+		return this.num;
+	}
+
+	BigInteger getDenom() {
+		return this.denom;
+	}
 }
