@@ -3,11 +3,13 @@ package org.cf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.math3.fraction.BigFraction;
 import org.junit.Test;
 
 public class DirectMethodTest {
@@ -28,10 +30,12 @@ public class DirectMethodTest {
 		}
 
 		try {
-			assertEquals(result, DirectMethod.partialQuotient(p, N, b));
+			assertEquals(result, DirectMethod.partialQuotient(p, N, b, null));
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 		}
 
 		cs = new ArrayList<BigInteger>(Arrays.asList(new BigInteger[] {
@@ -45,10 +49,12 @@ public class DirectMethodTest {
 				BigInteger.valueOf(4), BigInteger.ONE, BigInteger.ONE }));
 		N = BigInteger.valueOf(6);
 		try {
-			assertEquals(result, DirectMethod.partialQuotient(p, N, b));
+			assertEquals(result, DirectMethod.partialQuotient(p, N, b, null));
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 		}
 	}
 
