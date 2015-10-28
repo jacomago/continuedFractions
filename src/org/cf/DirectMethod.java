@@ -1,5 +1,7 @@
 package org.cf;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -8,8 +10,9 @@ import org.apache.commons.math3.fraction.BigFraction;
 
 public class DirectMethod {
 
-	static ArrayList<BigInteger> partialQuotient(Poly p, BigInteger values, BigInteger b, BufferedWriter w)
-			throws InterruptedException, ExecutionException, IOException {
+	static ArrayList<BigInteger> partialQuotient(Poly p, BigInteger values,
+			BigInteger b, BufferedWriter w) throws InterruptedException,
+			ExecutionException, IOException {
 		ArrayList<BigInteger> a = new ArrayList<BigInteger>();
 		a.add(Computation.getNextContinuedFracOpt(p, 2));
 		Poly p2 = Computation.nextPoly(p, a.get(0));
@@ -73,9 +76,9 @@ public class DirectMethod {
 		return new BigFraction(top, bot);
 	}
 
-	static BigInteger floor(BigFraction f) {
-		BigInteger num = f.getNumerator();
-		BigInteger denom = f.getDenominator();
+	static BigInteger floor(CFFraction f) {
+		BigInteger num = f.getNum();
+		BigInteger denom = f.getDenom();
 		BigInteger n = BigInteger.ZERO;
 		while (num.compareTo(BigInteger.ZERO) > 0) {
 			n = n.add(BigInteger.ONE);

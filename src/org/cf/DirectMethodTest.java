@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.math3.fraction.BigFraction;
 import org.junit.Test;
 
 public class DirectMethodTest {
