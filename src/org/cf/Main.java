@@ -20,12 +20,10 @@ public class Main {
 		BigInteger values = new BigInteger(v);
 		ArrayList<BigInteger> coeffs = createCoeffs(s);
 
-		BufferedWriter w = new BufferedWriter(
-				new OutputStreamWriter(System.out));
+		BufferedWriter w = new BufferedWriter(new OutputStreamWriter(System.out));
 		w.write("The coeffs are " + coeffs);
 		w.newLine();
-		ArrayList<BigInteger> a = DirectMethod.partialQuotient(
-				new Poly(coeffs), values, BigInteger.valueOf(100));
+		ArrayList<BigInteger> a = DirectMethod.partialQuotient(new Poly(coeffs), values, BigInteger.valueOf(100), w);
 		for (BigInteger i : a) {
 			w.write("" + i);
 		}
@@ -41,13 +39,12 @@ public class Main {
 		return coeffs;
 	}
 
-	public static ArrayList<BigInteger> continuedFraction(BigInteger values,
-			ArrayList<BigInteger> coeffs) throws Exception {
+	public static ArrayList<BigInteger> continuedFraction(BigInteger values, ArrayList<BigInteger> coeffs)
+			throws Exception {
 		Poly first = new Poly(coeffs);
 		Poly p = first;
 		ArrayList<BigInteger> cf = new ArrayList<BigInteger>();
-		for (BigInteger i = BigInteger.ZERO; i.compareTo(values) < 0; i = i
-				.add(BigInteger.ONE)) {
+		for (BigInteger i = BigInteger.ZERO; i.compareTo(values) < 0; i = i.add(BigInteger.ONE)) {
 			BigInteger a = Computation.getNextContinuedFrac(p);
 			cf.add(a);
 			p = Computation.nextPoly(p, a);
@@ -55,21 +52,19 @@ public class Main {
 		return cf;
 	}
 
-	public static void continuedFraction(BigInteger values,
-			ArrayList<BigInteger> coeffs, BufferedWriter w) throws Exception {
+	public static void continuedFraction(BigInteger values, ArrayList<BigInteger> coeffs, BufferedWriter w)
+			throws Exception {
 		Poly first = new Poly(coeffs);
 		Poly p = first;
-		for (BigInteger i = BigInteger.ZERO; i.compareTo(values) < 0; i = i
-				.add(BigInteger.ONE)) {
+		for (BigInteger i = BigInteger.ZERO; i.compareTo(values) < 0; i = i.add(BigInteger.ONE)) {
 			BigInteger a = Computation.getNextContinuedFrac(p);
 			w.write(a + ",");
 			p = Computation.nextPoly(p, a);
 		}
 	}
 
-	public static void continuedFractionAverages(BigInteger values,
-			ArrayList<BigInteger> coeffs, BufferedWriter w, int numProcesses)
-			throws Exception {
+	public static void continuedFractionAverages(BigInteger values, ArrayList<BigInteger> coeffs, BufferedWriter w,
+			int numProcesses) throws Exception {
 		Poly first = new Poly(coeffs);
 		Poly p = first;
 
@@ -78,15 +73,13 @@ public class Main {
 		BigFraction doubleMean = BigFraction.ZERO;
 
 		int scale = 10;
-		for (BigInteger i = BigInteger.ONE; i.compareTo(values) <= 0; i = i
-				.add(BigInteger.ONE)) {
+		for (BigInteger i = BigInteger.ONE; i.compareTo(values) <= 0; i = i.add(BigInteger.ONE)) {
 			BigFraction counter = new BigFraction(i);
 			BigInteger a = Computation.getNextContinuedFracOpt(p, numProcesses);
 			sum = sum.add(a);
 			mean = (new BigFraction(sum)).divide(counter);
 			doubleMean = mean.divide(counter);
-			w.write(a + "," + sum + ","
-					+ mean.bigDecimalValue(scale, BigDecimal.ROUND_DOWN) + ","
+			w.write(a + "," + sum + "," + mean.bigDecimalValue(scale, BigDecimal.ROUND_DOWN) + ","
 					+ doubleMean.bigDecimalValue(scale, BigDecimal.ROUND_DOWN));
 			w.newLine();
 			p = Computation.nextPoly(p, a);

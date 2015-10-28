@@ -3,6 +3,7 @@ package org.cf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +17,7 @@ public class DirectMethodTest {
 	@Test
 	public void testPartialQuotient() {
 		ArrayList<BigInteger> cs = new ArrayList<BigInteger>(
-				Arrays.asList(new BigInteger[] { BigInteger.valueOf(-2),
-						BigInteger.ZERO, BigInteger.ONE }));
+				Arrays.asList(new BigInteger[] { BigInteger.valueOf(-2), BigInteger.ZERO, BigInteger.ONE }));
 		Poly p = new Poly(cs);
 		BigInteger N = BigInteger.valueOf(118);
 		BigInteger b = BigInteger.valueOf(100);
@@ -29,42 +29,41 @@ public class DirectMethodTest {
 		}
 
 		try {
-			assertEquals(result, DirectMethod.partialQuotient(p, N, b));
+			assertEquals(result, DirectMethod.partialQuotient(p, N, b, null));
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 		}
 
-		cs = new ArrayList<BigInteger>(Arrays.asList(new BigInteger[] {
-				BigInteger.valueOf(-2), BigInteger.ZERO, BigInteger.ZERO,
-				BigInteger.ONE }));
+		cs = new ArrayList<BigInteger>(Arrays
+				.asList(new BigInteger[] { BigInteger.valueOf(-2), BigInteger.ZERO, BigInteger.ZERO, BigInteger.ONE }));
 		p = new Poly(cs);
 
-		result = new ArrayList<BigInteger>(Arrays.asList(new BigInteger[] {
-				BigInteger.ONE, BigInteger.valueOf(3), BigInteger.ONE,
-				BigInteger.valueOf(5), BigInteger.ONE, BigInteger.ONE,
-				BigInteger.valueOf(4), BigInteger.ONE, BigInteger.ONE }));
+		result = new ArrayList<BigInteger>(Arrays
+				.asList(new BigInteger[] { BigInteger.ONE, BigInteger.valueOf(3), BigInteger.ONE, BigInteger.valueOf(5),
+						BigInteger.ONE, BigInteger.ONE, BigInteger.valueOf(4), BigInteger.ONE, BigInteger.ONE }));
 		N = BigInteger.valueOf(6);
 		try {
-			assertEquals(result, DirectMethod.partialQuotient(p, N, b));
+			assertEquals(result, DirectMethod.partialQuotient(p, N, b, null));
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 		}
 	}
 
 	@Test
 	public void testFloor() {
-		assertEquals(BigInteger.ONE, DirectMethod.floor(new BigFraction(
-				BigInteger.valueOf(3), BigInteger.valueOf(2))));
+		assertEquals(BigInteger.ONE, DirectMethod.floor(new BigFraction(BigInteger.valueOf(3), BigInteger.valueOf(2))));
 	}
 
 	@Test
 	public void testCheckPnQn() {
-		assertTrue(DirectMethod.checkPnQn(BigInteger.valueOf(2),
-				BigInteger.ONE, BigInteger.ONE, BigInteger.ONE));
-		assertTrue(DirectMethod.checkPnQn(BigInteger.ONE, BigInteger.ONE,
-				BigInteger.ZERO, BigInteger.ONE));
+		assertTrue(DirectMethod.checkPnQn(BigInteger.valueOf(2), BigInteger.ONE, BigInteger.ONE, BigInteger.ONE));
+		assertTrue(DirectMethod.checkPnQn(BigInteger.ONE, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE));
 	}
 
 }
