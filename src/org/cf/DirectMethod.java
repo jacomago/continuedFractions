@@ -31,10 +31,12 @@ public class DirectMethod {
 			BigFraction alpha = calcAlpha(p, d, tn, yn, yn1);
 			BigInteger B = yn1.pow(2).max(b.multiply(yn1.add(BigInteger.ONE)));
 
+			CFFraction CFalpha = new CFFraction(alpha.getNumerator(),
+					alpha.getDenominator());
 			while (!(n.compareTo(values) > 0)
 					&& B.compareTo(yn1.multiply(b)) > 0) {
 				n = n.add(BigInteger.ONE);
-				BigInteger an = floor(alpha);
+				BigInteger an = floor(CFalpha);
 				a.add(an);
 				BigInteger newxn1 = an.multiply(xn1).add(xn);
 				BigInteger newyn1 = an.multiply(yn1).add(yn);
@@ -43,7 +45,8 @@ public class DirectMethod {
 				xn1 = newxn1;
 				yn1 = newyn1;
 				tn = new CFFraction(xn1, yn1);
-				alpha = BigFraction.ONE.divide(alpha.subtract(an));
+				CFalpha = new CFFraction(CFalpha.getDenom(), CFalpha.getNum()
+						.subtract(an.multiply(CFalpha.getDenom())));
 			}
 		}
 		return a;
@@ -64,9 +67,9 @@ public class DirectMethod {
 		return new BigFraction(top, bot);
 	}
 
-	static BigInteger floor(BigFraction f) {
-		BigInteger[] divrem = f.getNumerator().divideAndRemainder(
-				f.getDenominator());
+	static BigInteger floor(CFFraction cFalpha) {
+		BigInteger[] divrem = cFalpha.getNum().divideAndRemainder(
+				cFalpha.getDenom());
 		return divrem[0];
 	}
 

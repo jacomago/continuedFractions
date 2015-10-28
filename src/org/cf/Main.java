@@ -16,6 +16,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		String s = args[0];
 		String v = args[1];
+		String bs = args[2];
 
 		BigInteger values = new BigInteger(v);
 		ArrayList<BigInteger> coeffs = createCoeffs(s);
@@ -25,7 +26,7 @@ public class Main {
 		w.write("The coeffs are " + coeffs);
 		w.newLine();
 		ArrayList<BigInteger> a = DirectMethod.partialQuotient(
-				new Poly(coeffs), values, BigInteger.valueOf(100));
+				new Poly(coeffs), values, new BigInteger(bs));
 		for (BigInteger i : a) {
 			w.write("" + i);
 		}

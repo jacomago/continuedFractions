@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.math3.fraction.BigFraction;
 import org.junit.Test;
 
 public class DirectMethodTest {
@@ -55,7 +54,7 @@ public class DirectMethodTest {
 
 	@Test
 	public void testFloor() {
-		assertEquals(BigInteger.ONE, DirectMethod.floor(new BigFraction(
+		assertEquals(BigInteger.ONE, DirectMethod.floor(new CFFraction(
 				BigInteger.valueOf(3), BigInteger.valueOf(2))));
 	}
 
