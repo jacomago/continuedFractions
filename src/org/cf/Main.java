@@ -25,10 +25,8 @@ public class Main {
 				new OutputStreamWriter(System.out));
 		w.write("The coeffs are " + coeffs);
 		w.newLine();
-		ArrayList<BigInteger> a = DirectMethod.partialQuotient(new Poly(coeffs), values, new BigInteger(bs), w);
-		for (BigInteger i : a) {
-			w.write("" + i);
-		}
+		DirectMethod.partialQuotient(new Poly(coeffs), values, new BigInteger(
+				bs), w);
 		w.close();
 	}
 

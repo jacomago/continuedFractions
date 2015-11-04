@@ -47,6 +47,12 @@ public class DirectMethod {
 				n = n.add(BigInteger.ONE);
 				BigInteger an = floor(CFalpha);
 				a.add(an);
+
+				if (w != null) {
+					w.write(an.toString());
+					w.newLine();
+				}
+
 				BigInteger newxn1 = an.multiply(xn1).add(xn);
 				BigInteger newyn1 = an.multiply(yn1).add(yn);
 				xn = xn1;
@@ -95,7 +101,6 @@ public class DirectMethod {
 			return true;
 		} else
 			return false;
-
 	}
 
 }
