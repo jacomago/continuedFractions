@@ -13,7 +13,7 @@ public class CFFraction extends Number {
 	private BigInteger num;
 	private BigInteger denom;
 
-	CFFraction(BigInteger num, BigInteger denom) {
+	public CFFraction(BigInteger num, BigInteger denom) {
 		if (denom.compareTo(BigInteger.ZERO) == 0)
 			throw new ZeroException();
 		this.num = num;
@@ -49,11 +49,11 @@ public class CFFraction extends Number {
 		return bigFraction().longValue();
 	}
 
-	BigInteger getNum() {
+	public BigInteger getNum() {
 		return this.num;
 	}
 
-	BigInteger getDenom() {
+	public BigInteger getDenom() {
 		return this.denom;
 	}
 }

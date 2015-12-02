@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Poly {
 	ArrayList<BigInteger> coefficients;
 
-	Poly(ArrayList<BigInteger> l) {
+	public Poly(ArrayList<BigInteger> l) {
 		coefficients = l;
 	}
 
@@ -14,11 +14,11 @@ public class Poly {
 		return coefficients.size() - 1;
 	}
 
-	ArrayList<BigInteger> getCoeffs() {
+	public ArrayList<BigInteger> getCoeffs() {
 		return coefficients;
 	}
 
-	BigInteger result(BigInteger x) {
+	public BigInteger result(BigInteger x) {
 		BigInteger y = BigInteger.ZERO;
 		int count = 0;
 		for (BigInteger coeff : coefficients) {

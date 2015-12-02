@@ -10,9 +10,9 @@ import org.apache.commons.math3.fraction.BigFraction;
 
 public class DirectMethod {
 
-	static ArrayList<BigInteger> partialQuotient(Poly p, BigInteger values,
-			BigInteger b, BufferedWriter w) throws InterruptedException,
-			ExecutionException, IOException {
+	public static ArrayList<BigInteger> partialQuotient(Poly p,
+			BigInteger values, BigInteger b, BufferedWriter w)
+			throws InterruptedException, ExecutionException, IOException {
 		ArrayList<BigInteger> a = new ArrayList<BigInteger>();
 		a.add(Computation.getNextContinuedFracOpt(p, 2));
 		Poly p2 = Computation.nextPoly(p, a.get(0));
@@ -82,7 +82,7 @@ public class DirectMethod {
 		return new BigFraction(top, bot);
 	}
 
-	static BigInteger floor(CFFraction f) {
+	public static BigInteger floor(CFFraction f) {
 		BigInteger num = f.getNum();
 		BigInteger denom = f.getDenom();
 		BigInteger n = BigInteger.ZERO;
@@ -93,8 +93,8 @@ public class DirectMethod {
 		return n.subtract(BigInteger.ONE);
 	}
 
-	static boolean checkPnQn(BigInteger pn, BigInteger pn1, BigInteger qn,
-			BigInteger qn1) {
+	public static boolean checkPnQn(BigInteger pn, BigInteger pn1,
+			BigInteger qn, BigInteger qn1) {
 		BigInteger test = pn.multiply(qn1).subtract(pn1.multiply(qn));
 		if (test.compareTo(BigInteger.ONE) == 0
 				|| test.compareTo(BigInteger.ONE.negate()) == 0) {

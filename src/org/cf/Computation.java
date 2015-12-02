@@ -13,11 +13,25 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Computation {
-
-	static void log(String s, Object o) {
+	/**
+	 * Debug method, prints out the object and it's name.
+	 * 
+	 * @param s
+	 *            name of object
+	 * @param o
+	 *            object itself
+	 */
+	public static void log(String s, Object o) {
 		System.out.println(s + " is " + o);
 	}
 
+	/**
+	 * A combinations function
+	 * 
+	 * @param n
+	 * @param k
+	 * @return n choose k
+	 */
 	static public int combinations(int n, int k) {
 		if (n >= k) {
 			return factorial(n) / (factorial(n - k) * factorial(k));
@@ -26,6 +40,12 @@ public class Computation {
 		}
 	}
 
+	/**
+	 * Factorial function
+	 * 
+	 * @param n
+	 * @return n!
+	 */
 	public static int factorial(int n) {
 		if (n <= 0) {
 			return 1;
@@ -35,6 +55,14 @@ public class Computation {
 		}
 	}
 
+	/**
+	 * Basic version of finding the next partial quotient from the latest
+	 * polynomial.
+	 * 
+	 * @param p
+	 *            Polynomial in the algorithm
+	 * @return largest integer x such that p(x) > 0
+	 */
 	static public BigInteger getNextContinuedFrac(Poly p) {
 		// Find the greatest int that prev(i) <0
 		BigInteger x = BigInteger.ONE;
@@ -48,35 +76,20 @@ public class Computation {
 		return x.subtract(BigInteger.ONE);
 	}
 
-	static public BigInteger getNextContinuedFracPolyOpt(Poly p) {
-
-		List<BigInteger> coeffs = p.getCoeffs();
-		int d = coeffs.size();
-		BigInteger c = BigInteger.ZERO;
-		for (int j = d - 2; j >= 0; j++) {
-			c = coeffs.get(j);
-			if (c.compareTo(BigInteger.ZERO) != 0) {
-				break;
-			}
-
-		}
-
-		BigInteger s = c.divide(coeffs.get(d - 1)).negate();
-		log("s", s);
-		BigInteger start = s.add(BigInteger.valueOf(-(d))).max(BigInteger.ONE);
-		BigInteger end = s.add(BigInteger.valueOf(d));
-		for (BigInteger x = start; x.compareTo(end) < 0; x = x
-				.add(BigInteger.ONE)) {
-			int test = p.result(x).compareTo(BigInteger.ZERO);
-			log("test", test);
-			if (test >= 0) {
-				return x.subtract(BigInteger.ONE);
-			}
-		}
-		return end;
-
-	}
-
+	/**
+	 * Does the same thing as the Basic version, but uses a parallel
+	 * numProcesses-ary search
+	 * 
+	 * @param p
+	 *            the polynomial
+	 * @param numProcesses
+	 *            number of processors
+	 * @return samlest integer such that p(x) >0
+	 * @throws InterruptedException
+	 *             if computation is interrupeted externally
+	 * @throws ExecutionException
+	 *             I fthere is a probelm with creating threads.
+	 */
 	static public BigInteger getNextContinuedFracOpt(Poly p, int numProcesses)
 			throws InterruptedException, ExecutionException {
 		// Find the greatest int i that poly(i) <0
@@ -175,6 +188,15 @@ public class Computation {
 		return new checkXY(a, p.result(a).compareTo(BigInteger.ZERO) < 0);
 	}
 
+	/**
+	 * Returns the next polynomial in the algortihm
+	 * 
+	 * @param prev
+	 * @param x
+	 * @return next polynomial
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
 	static public Poly nextPoly(Poly prev, BigInteger x)
 			throws InterruptedException, ExecutionException {
 		// Get the poly P(x+a_n)
@@ -238,6 +260,13 @@ public class Computation {
 		return c;
 	}
 
+	/**
+	 * Calculates and stores the value, sum, mean and doubleMean
+	 * 
+	 * @param numbers
+	 * @param w
+	 * @throws IOException
+	 */
 	public static void sumsEtc(ArrayList<BigInteger> numbers, BufferedWriter w)
 			throws IOException {
 		BigInteger sum = BigInteger.ZERO;

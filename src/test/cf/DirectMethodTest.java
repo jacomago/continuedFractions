@@ -1,4 +1,4 @@
-package org.cf;
+package test.cf;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
+import org.cf.CFFraction;
+import org.cf.DirectMethod;
+import org.cf.Poly;
 import org.junit.Test;
 
 public class DirectMethodTest {

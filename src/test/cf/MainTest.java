@@ -1,4 +1,4 @@
-package org.cf;
+package test.cf;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import org.cf.Main;
 import org.junit.Test;
 
 public class MainTest {

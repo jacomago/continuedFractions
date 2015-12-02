@@ -1,4 +1,4 @@
-package org.cf;
+package test.cf;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.math3.fraction.BigFraction;
+import org.cf.CFFraction;
+import org.cf.Poly;
 import org.junit.Test;
 
 public class PolyTest {
