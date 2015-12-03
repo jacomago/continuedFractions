@@ -11,6 +11,7 @@ local.properties
 .settings/
 .loadpath
 output/
+.ipynb_checkpoints/
 commons-math3-3.5/
 # Eclipse Core
 .project
