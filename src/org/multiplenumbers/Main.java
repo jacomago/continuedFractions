@@ -1,8 +1,10 @@
 package org.multiplenumbers;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.cf.Poly;
 
 public class Main {
@@ -15,13 +17,16 @@ public class Main {
 
 	}
 
-	public static boolean checkIrreducible(Poly p) {
+	public static boolean checkIrreducible(Poly p, BigDecimal[] solns) {
 
 		return false;
 
 	}
 
-	public static boolean checkPositiveSolution(Poly p) {
+	public static boolean checkPositiveSolution(Poly p, BigDecimal[] solns) {
+		LaguerreSolver lSolve = new LaguerreSolver(0.01);
+		double[] coeffs = p.getCoeffs().parallelStream().mapToDouble(BigDecimal::doubleValue).toArray();
+		lSolve.solveAllComplex(coeffs, 0);
 		return false;
 	}
 
@@ -51,8 +56,12 @@ public class Main {
 	}
 
 	public static boolean checkSuitablePoly(Poly p) {
-		if (checkMinimal(p) && checkIrreducible(p) && checkMinimal(p)) {
-			return true;
+
+		if (checkMinimal(p)) {
+			BigDecimal[] solns = p.solve();
+			if (checkIrreducible(p, solns) && checkPositiveSolution(p, solns)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -68,8 +77,7 @@ public class Main {
 		return new Poly(l);
 	}
 
-	public static ArrayList<BigInteger> convertBase(BigInteger number,
-			BigInteger base) {
+	public static ArrayList<BigInteger> convertBase(BigInteger number, BigInteger base) {
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
 		BigInteger q = number;
 		while (q.compareTo(BigInteger.ZERO) != 0) {

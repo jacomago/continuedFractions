@@ -1,5 +1,6 @@
 package org.cf;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -85,5 +86,12 @@ public class Poly {
 			return false;
 		Poly p = (Poly) other;
 		return (p.coefficients.equals(this.coefficients));
+	}
+
+	public BigDecimal[] solve() {
+		// TODO Auto-generated method stub
+		BigDecimal[] solns = new BigDecimal[this.getDegree()];
+
+		return null;
 	}
 }
