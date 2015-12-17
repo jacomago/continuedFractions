@@ -2,7 +2,11 @@ package org.cf;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.ArrayList;
+
+import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
+import org.apache.commons.math3.complex.Complex;
 
 public class Poly {
 	ArrayList<BigInteger> coefficients;
@@ -63,8 +67,7 @@ public class Poly {
 		int count = 0;
 		for (BigInteger coeff : coefficients) {
 			// System.out.println("coeff is " + coeff + " count is " + count);
-			BigInteger xToCount = x.getNum().pow(count)
-					.multiply(x.getDenom().pow(this.getDegree() - count));
+			BigInteger xToCount = x.getNum().pow(count).multiply(x.getDenom().pow(this.getDegree() - count));
 
 			// System.out.println("pow is " + xToCount);
 			p = p.add(xToCount.multiply(coeff));
@@ -88,10 +91,19 @@ public class Poly {
 		return (p.coefficients.equals(this.coefficients));
 	}
 
-	public BigDecimal[] solve() {
+	public ArrayList<BigDecimal> solve() {
 		// TODO Auto-generated method stub
-		BigDecimal[] solns = new BigDecimal[this.getDegree()];
-
-		return null;
+		ArrayList<BigDecimal> solns = new ArrayList<BigDecimal>();
+		MathContext m = new MathContext(3);
+		LaguerreSolver lSolve = new LaguerreSolver(0.01);
+		double[] coeffs = coefficients.parallelStream().mapToDouble(BigInteger::doubleValue).toArray();
+		Complex[] fullSolutions = lSolve.solveAllComplex(coeffs, 0);
+		for (Complex c : fullSolutions) {
+			if (Math.abs(c.getImaginary()) < 0.01) {
+				solns.add(new BigDecimal(c.getReal(), m));
+			}
+		}
+		return solns;
 	}
+
 }

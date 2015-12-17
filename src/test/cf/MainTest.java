@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import org.cf.Main;
+import org.cf.ContinuedFractionMain;
 import org.junit.Test;
 
 public class MainTest {
@@ -20,14 +20,14 @@ public class MainTest {
 		l.add(BigInteger.valueOf(2));
 		l.add(BigInteger.valueOf(3));
 		l.add(BigInteger.valueOf(4));
-		assertEquals("Coeffs of 2,3,4", l, Main.createCoeffs("2,3,4"));
+		assertEquals("Coeffs of 2,3,4", l, ContinuedFractionMain.createCoeffs("2,3,4"));
 
 		l.clear();
 
 		l.add(BigInteger.valueOf(-2));
 		l.add(BigInteger.valueOf(0));
 		l.add(BigInteger.valueOf(-4));
-		assertEquals("Coeffs of -2,0,-4", l, Main.createCoeffs("-2,0,-4"));
+		assertEquals("Coeffs of -2,0,-4", l, ContinuedFractionMain.createCoeffs("-2,0,-4"));
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class MainTest {
 			correct.add(BigInteger.valueOf(2));
 		}
 		assertEquals("cf of 2 is 1,2,2,2,2...", correct,
-				Main.continuedFraction(v, l));
+				ContinuedFractionMain.continuedFraction(v, l));
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class MainTest {
 		try {
 			File f = new File("cubicroot2.csv");
 			BufferedWriter w = new BufferedWriter(new FileWriter(f));
-			Main.continuedFraction(v, l, w);
+			ContinuedFractionMain.continuedFraction(v, l, w);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

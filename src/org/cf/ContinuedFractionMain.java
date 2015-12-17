@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.math3.fraction.BigFraction;
 
-public class Main {
+public class ContinuedFractionMain {
 
 	/**
 	 * @param args
