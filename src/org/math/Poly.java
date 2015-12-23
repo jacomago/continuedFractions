@@ -1,4 +1,4 @@
-package org.cf;
+package org.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,7 +15,7 @@ public class Poly {
 		coefficients = l;
 	}
 
-	int getDegree() {
+	public int getDegree() {
 		return coefficients.size() - 1;
 	}
 

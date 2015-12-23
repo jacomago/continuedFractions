@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 
-import org.cf.Poly;
+import org.math.Poly;
 
 public class ListPolysMain {
 

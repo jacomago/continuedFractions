@@ -12,49 +12,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.math.Maths;
+import org.math.Poly;
+
 public class Computation {
-	/**
-	 * Debug method, prints out the object and it's name.
-	 * 
-	 * @param s
-	 *            name of object
-	 * @param o
-	 *            object itself
-	 */
-	public static void log(String s, Object o) {
-		System.out.println(s + " is " + o);
-	}
-
-	/**
-	 * A combinations function
-	 * 
-	 * @param n
-	 * @param k
-	 * @return n choose k
-	 */
-	static public int combinations(int n, int k) {
-		if (n >= k) {
-			return factorial(n) / (factorial(n - k) * factorial(k));
-		} else {
-			return 0;
-		}
-	}
-
-	/**
-	 * Factorial function
-	 * 
-	 * @param n
-	 * @return n!
-	 */
-	public static int factorial(int n) {
-		if (n <= 0) {
-			return 1;
-		} else {
-
-			return n * factorial(n - 1);
-		}
-	}
-
 	/**
 	 * Basic version of finding the next partial quotient from the latest
 	 * polynomial.
@@ -255,7 +216,7 @@ public class Computation {
 			int count, int i) {
 		BigInteger xToPow = x.pow(i - count);
 		BigInteger comb = BigInteger
-				.valueOf(Computation.combinations(i, count));
+				.valueOf(Maths.combinations(i, count));
 		BigInteger c = xToPow.multiply(number).multiply(comb);
 		return c;
 	}

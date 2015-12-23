@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.math3.fraction.BigFraction;
-import org.cf.CFFraction;
-import org.cf.Poly;
 import org.junit.Test;
+import org.math.CFFraction;
+import org.math.Poly;
 
 public class PolyTest {
 

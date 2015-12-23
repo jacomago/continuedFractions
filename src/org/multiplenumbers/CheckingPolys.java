@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.cf.Poly;
+import org.math.Poly;
 
 public class CheckingPolys {
 

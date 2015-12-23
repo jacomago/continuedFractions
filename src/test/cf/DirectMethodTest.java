@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
-import org.cf.CFFraction;
 import org.cf.DirectMethod;
-import org.cf.Poly;
 import org.junit.Test;
+import org.math.CFFraction;
+import org.math.Poly;
 
 public class DirectMethodTest {
 

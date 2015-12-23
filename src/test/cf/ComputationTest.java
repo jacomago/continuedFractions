@@ -6,27 +6,28 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import org.cf.Computation;
-import org.cf.Poly;
 import org.junit.Test;
+import org.math.Maths;
+import org.math.Poly;
 
 public class ComputationTest {
 
 	@Test
 	public void testFactorial() {
-		assertEquals("0! is 1", 1, Computation.factorial(0));
-		assertEquals("1! is 1", 1, Computation.factorial(1));
-		assertEquals("2! is 2", 2, Computation.factorial(2));
+		assertEquals("0! is 1", 1, Maths.factorial(0));
+		assertEquals("1! is 1", 1, Maths.factorial(1));
+		assertEquals("2! is 2", 2, Maths.factorial(2));
 		assertEquals("6! is 6*5*4*3*2", 6 * 5 * 4 * 3 * 2,
-				Computation.factorial(6));
+				Maths.factorial(6));
 	}
 
 	@Test
 	public void testCombinations() {
-		assertEquals("1C1 is 1", 1, Computation.combinations(1, 1));
-		assertEquals("5C5 is 1", 1, Computation.combinations(5, 5));
-		assertEquals("2C1 is 2", 2, Computation.combinations(2, 1));
+		assertEquals("1C1 is 1", 1, Maths.combinations(1, 1));
+		assertEquals("5C5 is 1", 1, Maths.combinations(5, 5));
+		assertEquals("2C1 is 2", 2, Maths.combinations(2, 1));
 
-		assertEquals("0C0 is 1", 1, Computation.combinations(0, 0));
+		assertEquals("0C0 is 1", 1, Maths.combinations(0, 0));
 	}
 
 	@Test
@@ -75,14 +76,14 @@ public class ComputationTest {
 		BigInteger a;
 		try {
 			for (int j = 2; j < 5; j++) {
-				Computation.log("j", j);
+				Maths.log("j", j);
 				l.clear();
 				l.add(BigInteger.valueOf(-2));
 				l.add(BigInteger.valueOf(1));
 				a = Computation.getNextContinuedFracOpt(new Poly(l), j);
 				assertEquals("Poly p(x) = x-2 has root 2", BigInteger.ONE, a);
 
-				Computation.log("j", j);
+				Maths.log("j", j);
 				l.clear();
 				l.add(BigInteger.valueOf(-5));
 				l.add(BigInteger.valueOf(1));
@@ -91,7 +92,7 @@ public class ComputationTest {
 						BigInteger.valueOf(4), a);
 
 				// test poly x^2 - 2
-				Computation.log("j", j);
+				Maths.log("j", j);
 				l.clear();
 				l.add(BigInteger.valueOf(-2));
 				l.add(BigInteger.valueOf(0));
@@ -101,7 +102,7 @@ public class ComputationTest {
 						BigInteger.ONE, a);
 
 				// test poly x^2 - 5
-				Computation.log("j", j);
+				Maths.log("j", j);
 				l.clear();
 				l.add(BigInteger.valueOf(-5));
 				l.add(BigInteger.valueOf(0));

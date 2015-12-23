@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.fraction.BigFraction;
+import org.math.Poly;
 
 public class ContinuedFractionMain {
 

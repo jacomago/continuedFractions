@@ -3,6 +3,8 @@ package org.cf;
 import java.math.BigInteger;
 import java.util.concurrent.Callable;
 
+import org.math.Poly;
+
 public class Check implements Callable<checkXY> {
 	BigInteger x;
 	Poly p;
