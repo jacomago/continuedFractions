@@ -11,7 +11,7 @@ public class CheckingPolys {
 
 	public static boolean checkIrreducible(Poly p, ArrayList<BigDecimal> solns) {
 		for (BigDecimal d : solns) {
-			if (d.doubleValue() - d.intValue() > 0)
+			if (d.doubleValue() - d.intValue() < 0.001)
 				return false;
 		}
 		return true;
@@ -25,23 +25,24 @@ public class CheckingPolys {
 		return true;
 	}
 
-	public static boolean checkMinimal(Poly p) {
-		if (gcd(p.getCoeffs()).compareTo(BigInteger.ONE) == 0)
-			return true;
+	public static boolean checkSuitablePoly(Poly p, int degree) {
+		if (checkCorrectMinimalDegree(p, degree)) {
+
+			ArrayList<BigDecimal> solns = p.solve();
+			if (checkIrreducible(p, solns) && checkPositiveSolution(p, solns)) {
+				return true;
+			}
+		}
 
 		return false;
 	}
 
-	public static boolean checkSuitablePoly(Poly p, int degree) {
-		if (checkMinimal(p)) {
-			if (p.getCoeffs().size() == degree) {
-				ArrayList<BigDecimal> solns = p.solve();
-				if (checkIrreducible(p, solns) && checkPositiveSolution(p, solns)) {
-					return true;
-				}
-			}
-		}
-		return false;
+	private static boolean checkCorrectMinimalDegree(Poly p, int degree) {
+		ArrayList<BigInteger> cs = p.getCoeffs();
+		int size = cs.size();
+		BigInteger last = cs.get(size - 1);
+		BigInteger first = cs.get(0);
+		return size == degree + 1 && last.compareTo(BigInteger.ONE) == 0 && first.compareTo(BigInteger.ZERO) != 0;
 	}
 
 	public static Poly convertNumberToPoly(BigInteger number, BigInteger height) {

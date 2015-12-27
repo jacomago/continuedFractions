@@ -24,18 +24,21 @@ public class ListPolysMain {
 		int degree = Integer.parseInt(d);
 		BufferedWriter w = new BufferedWriter(new OutputStreamWriter(System.out));
 		BigInteger max = BigInteger.ZERO;
-		for (int i = 0; i < degree; i++) {
+		for (int i = 0; i <= degree + 1; i++) {
 			max = max.add(height.multiply(BigInteger.valueOf(2)).pow(i));
 		}
 		BigInteger number = BigInteger.ZERO;
-
 		try {
-			while (number.compareTo(max) < 0) {
+			while (checkBiggest(max, number)) {
 				number = number.add(BigInteger.ONE);
+
 				Poly current = CheckingPolys.convertNumberToPoly(number, height);
-				while (!CheckingPolys.checkSuitablePoly(current, degree)) {
+				while (!CheckingPolys.checkSuitablePoly(current, degree) && checkBiggest(max, number)) {
+
 					number = number.add(BigInteger.ONE);
+
 					current = CheckingPolys.convertNumberToPoly(number, height);
+
 				}
 				w.write(current.getCoeffs().toString());
 				w.newLine();
@@ -46,5 +49,9 @@ public class ListPolysMain {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static boolean checkBiggest(BigInteger max, BigInteger number) {
+		return number.compareTo(max) < 0;
 	}
 }
