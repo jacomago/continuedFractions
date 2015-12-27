@@ -32,11 +32,13 @@ public class CheckingPolys {
 		return false;
 	}
 
-	public static boolean checkSuitablePoly(Poly p) {
+	public static boolean checkSuitablePoly(Poly p, int degree) {
 		if (checkMinimal(p)) {
-			ArrayList<BigDecimal> solns = p.solve();
-			if (checkIrreducible(p, solns) && checkPositiveSolution(p, solns)) {
-				return true;
+			if (p.getCoeffs().size() == degree) {
+				ArrayList<BigDecimal> solns = p.solve();
+				if (checkIrreducible(p, solns) && checkPositiveSolution(p, solns)) {
+					return true;
+				}
 			}
 		}
 		return false;

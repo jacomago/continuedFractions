@@ -84,7 +84,7 @@ public class PolyTest {
 		assertEquals(soln, p.solve());
 		cs.add(BigInteger.ONE);
 		p = new Poly(cs);
-		soln.add(new BigDecimal(-1.00, m));
+		soln.add(new BigDecimal("-1.00"));
 		assertEquals(soln, p.solve());
 		fail("Not yet Implementd");
 	}

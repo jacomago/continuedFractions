@@ -14,6 +14,10 @@ public class ListPolysMain {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		if (args.length != 2) {
+			System.out.println("need two parameters");
+			return;
+		}
 		String h = args[0];
 		String d = args[1];
 		BigInteger height = new BigInteger(h);
@@ -29,7 +33,7 @@ public class ListPolysMain {
 			while (number.compareTo(max) < 0) {
 				number = number.add(BigInteger.ONE);
 				Poly current = CheckingPolys.convertNumberToPoly(number, height);
-				while (!CheckingPolys.checkSuitablePoly(current)) {
+				while (!CheckingPolys.checkSuitablePoly(current, degree)) {
 					number = number.add(BigInteger.ONE);
 					current = CheckingPolys.convertNumberToPoly(number, height);
 				}
