@@ -98,7 +98,7 @@ public class Poly {
 		LaguerreSolver lSolve = new LaguerreSolver(0.01);
 		double[] coeffs = coefficients.parallelStream().mapToDouble(BigInteger::doubleValue).toArray();
 
-		Complex[] fullSolutions = lSolve.solveAllComplex(coeffs, 0);
+		Complex[] fullSolutions = lSolve.solveAllComplex(coeffs, 0.1);
 		for (Complex c : fullSolutions) {
 			if (Math.abs(c.getImaginary()) < 0.01) {
 				solns.add(new BigDecimal(c.getReal(), m));

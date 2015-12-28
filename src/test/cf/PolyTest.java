@@ -1,7 +1,6 @@
 package test.cf;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -86,7 +85,13 @@ public class PolyTest {
 		p = new Poly(cs);
 		soln.add(new BigDecimal("-1.00"));
 		assertEquals(soln, p.solve());
-		fail("Not yet Implementd");
+		cs = new ArrayList<BigInteger>(Arrays
+				.asList(new BigInteger[] { BigInteger.valueOf(-2), BigInteger.ZERO, BigInteger.ZERO, BigInteger.ONE }));
+		p = new Poly(cs);
+		soln.clear();
+		soln.add(new BigDecimal("1.26"));
+		assertEquals(soln, p.solve());
+
 	}
 
 }

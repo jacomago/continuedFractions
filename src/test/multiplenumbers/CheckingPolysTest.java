@@ -1,29 +1,57 @@
 package test.multiplenumbers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
+import org.math.Poly;
 import org.multiplenumbers.CheckingPolys;
 
 public class CheckingPolysTest {
 
 	@Test
 	public void testCheckIrreducible() {
-		fail("Not yet implemented");
+		ArrayList<BigDecimal> solns = new ArrayList<BigDecimal>();
+		solns.add(new BigDecimal("1"));
+		assertTrue(!CheckingPolys.checkIrreducible(solns));
+		solns.add(new BigDecimal("1.2"));
+		assertTrue(!CheckingPolys.checkIrreducible(solns));
+		solns.clear();
+		solns.add(new BigDecimal("1.2"));
+		assertTrue(CheckingPolys.checkIrreducible(solns));
 	}
 
 	@Test
 	public void testCheckPositiveSolution() {
-		fail("Not yet implemented");
+		ArrayList<BigDecimal> solns = new ArrayList<BigDecimal>();
+		solns.add(new BigDecimal("1.00"));
+		assertTrue(CheckingPolys.checkPositiveSolution(solns));
+		solns.add(new BigDecimal("-1.00"));
+
+		assertTrue(CheckingPolys.checkPositiveSolution(solns));
+		solns.clear();
+		solns.add(new BigDecimal("-1.00"));
 	}
 
 	@Test
-	public void testCheckMinimal() {
-		fail("Not yet implemented");
+	public void testCheckCorrectMinimalDegree() {
+		ArrayList<BigInteger> cs = new ArrayList<BigInteger>();
+		cs.add(BigInteger.ONE);
+		Poly p = new Poly(cs);
+		assertTrue(CheckingPolys.checkCorrectMinimalDegree(p, 0));
+		cs.add(BigInteger.ZERO);
+		p = new Poly(cs);
+		assertTrue(!CheckingPolys.checkCorrectMinimalDegree(p, 0));
+		cs.add(BigInteger.ONE);
+		p = new Poly(cs);
+		assertTrue(CheckingPolys.checkCorrectMinimalDegree(p, 2));
+
 	}
 
 	@Test
@@ -47,7 +75,24 @@ public class CheckingPolysTest {
 
 	@Test
 	public void testCheckSuitablePoly() {
-		fail("Not yet implemented");
+		// $x^{3} - 2$ & -108 & 5010670 \\
+		BigInteger[] cs = { BigInteger.valueOf(-2), BigInteger.ZERO, BigInteger.ZERO, BigInteger.ONE };
+		ArrayList<BigInteger> coeffss = new ArrayList<BigInteger>(Arrays.asList(cs));
+		Poly p = new Poly(coeffss);
+		assertTrue(CheckingPolys.checkSuitablePoly(p, 3));
+		// \hline
+		// $x^{5} - x - 1$ & 2869 & 3134614 \\
+		cs = new BigInteger[] { BigInteger.valueOf(-1), BigInteger.valueOf(-1), BigInteger.ZERO, BigInteger.ZERO,
+				BigInteger.ZERO, BigInteger.ONE };
+		coeffss = new ArrayList<BigInteger>(Arrays.asList(cs));
+		p = new Poly(coeffss);
+		assertTrue(CheckingPolys.checkSuitablePoly(p, 5));
+		// $x^{3} - 8 x - 10$ & -652 & 4872810 \\
+		cs = new BigInteger[] { BigInteger.valueOf(-10), BigInteger.valueOf(-8), BigInteger.ZERO, BigInteger.ONE };
+
+		coeffss = new ArrayList<BigInteger>(Arrays.asList(cs));
+		p = new Poly(coeffss);
+		assertTrue(CheckingPolys.checkSuitablePoly(p, 3));
 	}
 
 	@Test

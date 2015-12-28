@@ -9,7 +9,7 @@ import org.math.Poly;
 
 public class CheckingPolys {
 
-	public static boolean checkIrreducible(Poly p, ArrayList<BigDecimal> solns) {
+	public static boolean checkIrreducible(ArrayList<BigDecimal> solns) {
 		for (BigDecimal d : solns) {
 			if (d.doubleValue() - d.intValue() < 0.001)
 				return false;
@@ -17,19 +17,21 @@ public class CheckingPolys {
 		return true;
 	}
 
-	public static boolean checkPositiveSolution(Poly p, ArrayList<BigDecimal> solns) {
+	public static boolean checkPositiveSolution(ArrayList<BigDecimal> solns) {
 		for (BigDecimal d : solns) {
-			if (d.signum() == -1)
-				return false;
+			if (d.signum() == 1)
+				return true;
 		}
-		return true;
+		return false;
 	}
 
 	public static boolean checkSuitablePoly(Poly p, int degree) {
 		if (checkCorrectMinimalDegree(p, degree)) {
+			// Maths.log("p", p);
 
 			ArrayList<BigDecimal> solns = p.solve();
-			if (checkIrreducible(p, solns) && checkPositiveSolution(p, solns)) {
+			// Maths.log("solns", solns);
+			if (checkIrreducible(solns) && checkPositiveSolution(solns)) {
 				return true;
 			}
 		}
@@ -37,7 +39,7 @@ public class CheckingPolys {
 		return false;
 	}
 
-	private static boolean checkCorrectMinimalDegree(Poly p, int degree) {
+	public static boolean checkCorrectMinimalDegree(Poly p, int degree) {
 		ArrayList<BigInteger> cs = p.getCoeffs();
 		int size = cs.size();
 		BigInteger last = cs.get(size - 1);
@@ -45,13 +47,19 @@ public class CheckingPolys {
 		return size == degree + 1 && last.compareTo(BigInteger.ONE) == 0 && first.compareTo(BigInteger.ZERO) != 0;
 	}
 
-	public static Poly convertNumberToPoly(BigInteger number, BigInteger height) {
+	public static Poly convertNumberToPoly(BigInteger number, BigInteger height, int degree) {
 		BigInteger base = height.multiply(BigInteger.valueOf(2));
 
 		ArrayList<BigInteger> l = convertBase(number, base);
 		for (int i = 0; i < l.size(); i++) {
 			l.set(i, l.get(i).subtract(height));
 		}
+		if (l.size() != degree) {
+			for (int i = l.size(); i < degree; i++) {
+				l.add(BigInteger.ONE);
+			}
+		}
+		l.add(BigInteger.ONE);
 
 		return new Poly(l);
 	}

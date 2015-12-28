@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 import org.math.Poly;
 
@@ -23,32 +24,46 @@ public class ListPolysMain {
 		BigInteger height = new BigInteger(h);
 		int degree = Integer.parseInt(d);
 		BufferedWriter w = new BufferedWriter(new OutputStreamWriter(System.out));
-		BigInteger max = BigInteger.ZERO;
-		for (int i = 0; i <= degree + 1; i++) {
-			max = max.add(height.multiply(BigInteger.valueOf(2)).pow(i));
-		}
-		BigInteger number = BigInteger.ZERO;
+		export(produceList(height, degree), w);
+	}
+
+	public static void export(ArrayList<String> data, BufferedWriter w) {
 		try {
-			while (checkBiggest(max, number)) {
-				number = number.add(BigInteger.ONE);
-
-				Poly current = CheckingPolys.convertNumberToPoly(number, height);
-				while (!CheckingPolys.checkSuitablePoly(current, degree) && checkBiggest(max, number)) {
-
-					number = number.add(BigInteger.ONE);
-
-					current = CheckingPolys.convertNumberToPoly(number, height);
-
-				}
-				w.write(current.getCoeffs().toString());
+			for (String s : data) {
+				w.write(s);
 				w.newLine();
-
 			}
 			w.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static ArrayList<String> produceList(BigInteger height, int degree) {
+		BigInteger max = BigInteger.ZERO;
+		for (int i = 0; i <= degree; i++) {
+			max = max.add(height.multiply(BigInteger.valueOf(2)).pow(i));
+		}
+		// Maths.log("max", max);
+		BigInteger number = BigInteger.ZERO;
+		ArrayList<String> results = new ArrayList<String>();
+
+		while (checkBiggest(max, number)) {
+			number = number.add(BigInteger.ONE);
+
+			Poly current = CheckingPolys.convertNumberToPoly(number, height, degree);
+			while (!CheckingPolys.checkSuitablePoly(current, degree) && checkBiggest(max, number)) {
+				number = number.add(BigInteger.ONE);
+
+				current = CheckingPolys.convertNumberToPoly(number, height, degree);
+
+			}
+			results.add(current.getCoeffs().toString());
+		}
+		// Maths.log("number", number);
+		// Maths.log("current", current);
+		return results;
 	}
 
 	private static boolean checkBiggest(BigInteger max, BigInteger number) {
