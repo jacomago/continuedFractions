@@ -104,8 +104,11 @@ public class CheckingPolysTest {
 	public void testConvertBase() {
 
 		assertEquals("[1, 0, 1, 0]",
-				CheckingPolys.convertBase(BigInteger.valueOf(10), BigInteger.valueOf(2)).toString());
-		assertEquals("[1, 0, 1]", CheckingPolys.convertBase(BigInteger.valueOf(10), BigInteger.valueOf(3)).toString());
+				CheckingPolys.convertBase(BigInteger.valueOf(10), BigInteger.valueOf(2), 3).toString());
+		assertEquals("[1, 0, 1]",
+				CheckingPolys.convertBase(BigInteger.valueOf(10), BigInteger.valueOf(3), 2).toString());
+		assertEquals("[1, 0, 1]",
+				CheckingPolys.convertBase(BigInteger.valueOf(10), BigInteger.valueOf(3), 3).toString());
 	}
 
 }

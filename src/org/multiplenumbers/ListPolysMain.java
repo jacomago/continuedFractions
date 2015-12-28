@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import org.math.Maths;
 import org.math.Poly;
 
 public class ListPolysMain {
@@ -24,7 +27,11 @@ public class ListPolysMain {
 		BigInteger height = new BigInteger(h);
 		int degree = Integer.parseInt(d);
 		BufferedWriter w = new BufferedWriter(new OutputStreamWriter(System.out));
-		export(produceList(height, degree), w);
+		ArrayList<String> results = produceList(height, degree);
+		Set<String> setResults = new LinkedHashSet<String>(results);
+		results.clear();
+		results.addAll(setResults);
+		export(results, w);
 	}
 
 	public static void export(ArrayList<String> data, BufferedWriter w) {
@@ -32,6 +39,7 @@ public class ListPolysMain {
 			for (String s : data) {
 				w.write(s);
 				w.newLine();
+
 			}
 			w.close();
 		} catch (IOException e) {
@@ -41,27 +49,22 @@ public class ListPolysMain {
 	}
 
 	public static ArrayList<String> produceList(BigInteger height, int degree) {
-		BigInteger max = BigInteger.ZERO;
-		for (int i = 0; i <= degree; i++) {
-			max = max.add(height.multiply(BigInteger.valueOf(2)).pow(i));
-		}
-		// Maths.log("max", max);
+		BigInteger max = height.multiply(BigInteger.valueOf(2)).add(BigInteger.ONE).pow(degree);
+
+		Maths.log("max", max);
 		BigInteger number = BigInteger.ZERO;
 		ArrayList<String> results = new ArrayList<String>();
 
 		while (checkBiggest(max, number)) {
-			number = number.add(BigInteger.ONE);
 
 			Poly current = CheckingPolys.convertNumberToPoly(number, height, degree);
-			while (!CheckingPolys.checkSuitablePoly(current, degree) && checkBiggest(max, number)) {
-				number = number.add(BigInteger.ONE);
-
-				current = CheckingPolys.convertNumberToPoly(number, height, degree);
-
+			if (CheckingPolys.checkSuitablePoly(current, degree)) {
+				results.add(current.getCoeffs().toString());
 			}
-			results.add(current.getCoeffs().toString());
+
+			number = number.add(BigInteger.ONE);
 		}
-		// Maths.log("number", number);
+		Maths.log("number", number);
 		// Maths.log("current", current);
 		return results;
 	}

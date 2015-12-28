@@ -50,14 +50,9 @@ public class CheckingPolys {
 	public static Poly convertNumberToPoly(BigInteger number, BigInteger height, int degree) {
 		BigInteger base = height.multiply(BigInteger.valueOf(2));
 
-		ArrayList<BigInteger> l = convertBase(number, base);
+		ArrayList<BigInteger> l = convertBase(number, base, degree);
 		for (int i = 0; i < l.size(); i++) {
 			l.set(i, l.get(i).subtract(height));
-		}
-		if (l.size() != degree) {
-			for (int i = l.size(); i < degree; i++) {
-				l.add(BigInteger.ONE);
-			}
 		}
 		l.add(BigInteger.ONE);
 
@@ -76,7 +71,7 @@ public class CheckingPolys {
 		return initial;
 	}
 
-	public static ArrayList<BigInteger> convertBase(BigInteger number, BigInteger base) {
+	public static ArrayList<BigInteger> convertBase(BigInteger number, BigInteger base, int degree) {
 		ArrayList<BigInteger> l = new ArrayList<BigInteger>();
 		BigInteger q = number;
 		while (q.compareTo(BigInteger.ZERO) != 0) {
@@ -84,6 +79,11 @@ public class CheckingPolys {
 			l.add(dr[1]);
 			q = dr[0];
 		}
+
+		for (int i = l.size(); i < degree; i++) {
+			l.add(BigInteger.ZERO);
+		}
+
 		Collections.reverse(l);
 		return l;
 	}
