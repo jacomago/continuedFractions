@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.math.Maths;
 import org.math.Poly;
 
 public class ListPolysMain {
@@ -51,7 +50,7 @@ public class ListPolysMain {
 	public static ArrayList<String> produceList(BigInteger height, int degree) {
 		BigInteger max = height.multiply(BigInteger.valueOf(2)).add(BigInteger.ONE).pow(degree);
 
-		Maths.log("max", max);
+		// Maths.log("max", max);
 		BigInteger number = BigInteger.ZERO;
 		ArrayList<String> results = new ArrayList<String>();
 
@@ -59,12 +58,13 @@ public class ListPolysMain {
 
 			Poly current = CheckingPolys.convertNumberToPoly(number, height, degree);
 			if (CheckingPolys.checkSuitablePoly(current, degree)) {
-				results.add(current.getCoeffs().toString());
+				String s = current.getCoeffs().toString();
+				results.add(s.substring(1, s.length() - 1));
 			}
 
 			number = number.add(BigInteger.ONE);
 		}
-		Maths.log("number", number);
+		// Maths.log("number", number);
 		// Maths.log("current", current);
 		return results;
 	}
