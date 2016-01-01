@@ -58,8 +58,11 @@ public class ListPolysMain {
 
 			Poly current = CheckingPolys.convertNumberToPoly(number, height, degree);
 			if (CheckingPolys.checkSuitablePoly(current, degree)) {
-				String s = current.getCoeffs().toString();
-				results.add(s.substring(1, s.length() - 1));
+				String s = "";
+				for (BigInteger c : current.getCoeffs()) {
+					s += c.toString() + ",";
+				}
+				results.add(s.substring(0, s.length() - 1));
 			}
 
 			number = number.add(BigInteger.ONE);

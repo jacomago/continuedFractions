@@ -1,4 +1,4 @@
-#$ -cwd
+put#$ -cwd
 #$ -V
 #$ -o /shared/storage/maths/research/numbertheory/sjb577/cf
 #$ -e /shared/storage/maths/research/numbertheory/sjb577/cf
