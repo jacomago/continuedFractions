@@ -9,8 +9,13 @@
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="../../../.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+        <pathelement location="../../../.p2/pool/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
     <path id="Continued Fractions of Algebraics.classpath">
         <pathelement location="bin"/>
+        <path refid="JUnit 4.libraryclasspath"/>
         <pathelement location="commons-math3-3.5/commons-math3-3.5.jar"/>
         <pathelement location="commons-math3-3.5/commons-math3-3.5-javadoc.jar"/>
     </path>
@@ -50,10 +55,40 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
+    <target name="CheckingPolysTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="test.multiplenumbers.CheckingPolysTest" todir="${junit.output.dir}"/>
+            <classpath refid="Continued Fractions of Algebraics.classpath"/>
+        </junit>
+    </target>
     <target name="ListPolysMain">
         <java classname="org.multiplenumbers.ListPolysMain" failonerror="true" fork="yes">
             <arg line="3 3"/>
             <classpath refid="Continued Fractions of Algebraics.classpath"/>
         </java>
+    </target>
+    <target name="PolyTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="test.cf.PolyTest" todir="${junit.output.dir}"/>
+            <classpath refid="Continued Fractions of Algebraics.classpath"/>
+        </junit>
+    </target>
+    <target name="ContinuedFractionMain">
+        <java classname="org.cf.ContinuedFractionMain" failonerror="true" fork="yes">
+            <arg line="-2,0,0,1 100 2"/>
+            <classpath refid="Continued Fractions of Algebraics.classpath"/>
+        </java>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
     </target>
 </project>
