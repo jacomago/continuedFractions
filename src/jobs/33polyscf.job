@@ -1,7 +1,7 @@
 put#$ -cwd
 #$ -V
-#$ -o /shared/storage/maths/research/numbertheory/sjb577/cf
-#$ -e /shared/storage/maths/research/numbertheory/sjb577/cf
+#$ -o /shared/storage/maths/research/numbertheory/sjb577/cf/33polys
+#$ -e /shared/storage/maths/research/numbertheory/sjb577/cf/33polys
 #$ -M sjb577@york.ac.uk
 #$ -m e
 #$ -l h_rt=12:00:00
