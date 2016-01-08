@@ -1,0 +1,11 @@
+#$ -cwd
+#$ -V
+#$ -o /shared/storage/maths/research/numbertheory/sjb577/cf/33polys
+#$ -e /shared/storage/maths/research/numbertheory/sjb577/cf/33polys
+#$ -M sjb577@york.ac.uk
+#$ -m e
+#$ -l h_rt=6:00:00
+#$ -l h_vmem=8G
+#$ -pe smp 4
+poly=$(awk NR==$SGE_TASK_ID $polys)
+java -Xmx900m -cp bin:commons-math3-3.5/commons-math3-3.5.jar org/cf/ContinuedFractionMain $poly 2000000 4

@@ -1,0 +1,11 @@
+#$ -cwd
+#$ -V
+#$ -o output
+#$ -e output
+#$ -M sjb577@york.ac.uk
+#$ -m e
+#$ -l h_rt=3:00:00
+#$ -l h_vmem=16G
+#$ -pe smp 8
+#$ -t 1-8
+java -Xmx900m org.analysis.Analyse <output/allThePolys.job.o139385.$SGE_TASK_ID
